@@ -1,0 +1,79 @@
+"use client";
+
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Badge } from "@/components/ui/Badge";
+import { AgentCard } from "@/components/sections/AgentCard";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { agents } from "@/config/agents";
+import type { Department } from "@ai-software-house/shared-types";
+
+const departments: { label: string; value: Department | "all" }[] = [
+  { label: "All", value: "all" },
+  { label: "Support", value: "customer-support" },
+  { label: "Sales", value: "sales" },
+  { label: "Finance", value: "finance" },
+  { label: "Research", value: "research" },
+  { label: "Documents", value: "documents" },
+  { label: "Executive", value: "executive" },
+];
+
+export function AIEmployeesGrid() {
+  const [activeDept, setActiveDept] = useState<Department | "all">("all");
+
+  const filtered =
+    activeDept === "all"
+      ? agents
+      : agents.filter((a) => a.department === activeDept);
+
+  return (
+    <section className="px-4 py-24 md:px-8">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-12 max-w-2xl">
+          <SectionHeading
+            title="Agents for"
+            accent="your department."
+          />
+          <p className="mt-4 text-muted">
+            Browse by department or explore all six AI Employees below.
+          </p>
+        </div>
+
+        <div className="mb-10 flex flex-wrap gap-2" role="tablist">
+          {departments.map((dept) => (
+            <button
+              key={dept.value}
+              onClick={() => setActiveDept(dept.value)}
+              role="tab"
+              aria-selected={activeDept === dept.value}
+              className={`rounded-full border px-4 py-1.5 text-xs font-medium uppercase tracking-wider transition-colors ${
+                activeDept === dept.value
+                  ? "border-primary bg-primary/10 text-primary"
+                  : "border-border text-muted hover:border-foreground/20 hover:text-foreground"
+              }`}
+            >
+              {dept.label}
+            </button>
+          ))}
+        </div>
+
+        <motion.div layout className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <AnimatePresence mode="popLayout">
+            {filtered.map((agent) => (
+              <motion.div
+                key={agent.slug}
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.3 }}
+              >
+                <AgentCard agent={agent} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
