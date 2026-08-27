@@ -1,29 +1,23 @@
+import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
+import { Reveal } from "@/components/ui/Reveal";
 import { ProcessSteps } from "./ProcessSteps";
 
 export function HowItWorksSection() {
   return (
-    <section className="border-y border-border px-4 py-24 md:px-8">
-      <div className="mx-auto max-w-7xl">
-        <RevealOnScroll>
-          <div className="mb-16 max-w-2xl">
-            <SectionHeading
-              title="From discovery to"
-              accent="continuous operation."
-            />
-            <p className="mt-4 text-muted">
-              We don&apos;t hand you a bot and leave. Each deployment follows a
-              four-phase process that turns a business department into a
-              measurable, continuously improving autonomous operation.
-            </p>
-          </div>
-        </RevealOnScroll>
+    <Section id="how-it-works">
+      <Reveal>
+        <SectionHeading
+          eyebrow="How we work"
+          title="From first conversation to"
+          accent="running operation."
+          lead="We don't hand over a bot and leave. Four phases turn a department into a measurable, continuously improving autonomous operation."
+        />
+      </Reveal>
 
-        <RevealOnScroll>
-          <ProcessSteps />
-        </RevealOnScroll>
+      <div className="mt-14">
+        <ProcessSteps />
       </div>
-    </section>
+    </Section>
   );
 }
