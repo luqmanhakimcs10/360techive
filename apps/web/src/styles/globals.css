@@ -26,10 +26,58 @@
   body {
     @apply bg-background text-foreground antialiased;
   }
+
+  /*
+   * `--color-border` is a full-strength colour, so `border-border` with no
+   * alpha paints a solid white (dark) or solid black (light) hairline.
+   * Every border in the design system should carry an opacity —
+   * border-border/10 for structure, /15 for interactive edges.
+   */
+
+  ::selection {
+    @apply bg-primary/25 text-foreground;
+  }
 }
 
 @layer components {
   .glass-panel {
-    @apply bg-surface/60 backdrop-blur-xl border border-border/10;
+    @apply border border-border/10 bg-surface/60 backdrop-blur-xl;
+  }
+}
+
+/* Range input thumb — used by the savings calculator. */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 18px;
+  width: 18px;
+  border-radius: 9999px;
+  background: rgb(var(--color-primary));
+  border: 3px solid rgb(var(--color-background));
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.35);
+  cursor: pointer;
+  transition: transform 0.15s ease-out;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+input[type="range"]::-moz-range-thumb {
+  height: 18px;
+  width: 18px;
+  border-radius: 9999px;
+  background: rgb(var(--color-primary));
+  border: 3px solid rgb(var(--color-background));
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

@@ -31,10 +31,11 @@ export function AgentInteractiveDemo({ agent }: AgentInteractiveDemoProps) {
   };
 
   return (
-    <section className="px-4 py-24 md:px-8">
+    <section className="px-4 py-20 md:px-8 md:py-28">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-12 max-w-2xl">
+        <div className="mx-auto mb-12 max-w-2xl text-center">
           <SectionHeading
+            align="center"
             title="Try a live preview"
             accent="of this agent."
           />
@@ -46,7 +47,7 @@ export function AgentInteractiveDemo({ agent }: AgentInteractiveDemoProps) {
 
         <GlassPanel className="mx-auto max-w-2xl p-0">
           <div className="flex flex-col" style={{ minHeight: 400 }}>
-            <div className="flex items-center gap-3 border-b border-border px-5 py-4">
+            <div className="flex items-center gap-3 border-b border-border/10 px-5 py-4">
               <Bot className="size-5 text-primary" />
               <span className="text-sm font-medium text-foreground">
                 {agent.name} &mdash; Live Preview
@@ -79,7 +80,7 @@ export function AgentInteractiveDemo({ agent }: AgentInteractiveDemoProps) {
                     className={`max-w-[80%] rounded-xl px-4 py-2.5 text-sm leading-relaxed ${
                       msg.role === "user"
                         ? "bg-primary text-white"
-                        : "border border-border bg-surface/60 text-muted"
+                        : "border border-border/15 bg-surface/60 text-muted"
                     }`}
                   >
                     {msg.content}
@@ -96,7 +97,7 @@ export function AgentInteractiveDemo({ agent }: AgentInteractiveDemoProps) {
                   <span className="mt-1 flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10">
                     <Bot className="size-4 text-primary" />
                   </span>
-                  <div className="flex items-center gap-1 rounded-xl border border-border bg-surface/60 px-4 py-3">
+                  <div className="flex items-center gap-1 rounded-xl border border-border/15 bg-surface/60 px-4 py-3">
                     <span className="size-1.5 animate-pulse rounded-full bg-muted" />
                     <span className="size-1.5 animate-pulse rounded-full bg-muted" style={{ animationDelay: "0.2s" }} />
                     <span className="size-1.5 animate-pulse rounded-full bg-muted" style={{ animationDelay: "0.4s" }} />
@@ -107,7 +108,7 @@ export function AgentInteractiveDemo({ agent }: AgentInteractiveDemoProps) {
 
             <form
               onSubmit={handleSubmit}
-              className="flex items-center gap-2 border-t border-border px-5 py-4"
+              className="flex items-center gap-2 border-t border-border/10 px-5 py-4"
             >
               <label htmlFor="demo-input" className="sr-only">
                 Type a message to the agent
@@ -119,7 +120,7 @@ export function AgentInteractiveDemo({ agent }: AgentInteractiveDemoProps) {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Type a message..."
                 disabled={isTyping}
-                className="flex-1 rounded-xl border border-border bg-surface/60 px-4 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50"
+                className="flex-1 rounded-xl border border-border/15 bg-surface/60 px-4 py-2.5 text-sm text-foreground placeholder:text-muted/50 focus:outline-none focus:ring-2 focus:ring-primary/50 disabled:opacity-50"
               />
               <button
                 type="submit"

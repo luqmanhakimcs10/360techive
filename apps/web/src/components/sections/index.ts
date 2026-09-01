@@ -11,3 +11,13 @@ export { ContactCTASection } from "./ContactCTASection";
 export { TransformationSection } from "./TransformationSection";
 export { TeamOfDigitalEmployeesSection } from "./TeamOfDigitalEmployeesSection";
 export { GrowthSection } from "./GrowthSection";
+
+// The argument sections
+export { CompoundingValueSection } from "./CompoundingValueSection";
+export { ImpactMetricsSection } from "./ImpactMetricsSection";
+export { CostComparisonSection } from "./CostComparisonSection";
+export { SavingsCalculatorSection } from "./SavingsCalculatorSection";
+export { CompanyBrainSection } from "./CompanyBrainSection";
+export { ModelGenerationsSection } from "./ModelGenerationsSection";
+export { CapabilityCurveSection } from "./CapabilityCurveSection";
+export { PositionQuoteSection } from "./PositionQuoteSection";

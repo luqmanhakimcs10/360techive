@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { LucideIcon } from "lucide-react";
 import { motion, useReducedMotion, useInView } from "framer-motion";
 
@@ -34,15 +34,22 @@ const scatterPositions = [
   { x: 40, y: 65 },
 ];
 
+/** The point every node orbits and every label flips around. */
+const CENTER = { x: 50, y: 50 };
+
 function getOrbitPosition(index: number, total: number, radius: number) {
   const angle = (index / total) * Math.PI * 2 - Math.PI / 2;
   return {
-    x: 50 + radius * Math.cos(angle),
-    y: 50 + radius * Math.sin(angle),
+    x: CENTER.x + radius * Math.cos(angle),
+    y: CENTER.y + radius * Math.sin(angle),
   };
 }
 
-function getNodePosition(index: number, total: number, variant: "scattered" | "orbit") {
+function getNodePosition(
+  index: number,
+  total: number,
+  variant: "scattered" | "orbit"
+) {
   if (variant === "scattered") {
     return scatterPositions[index % scatterPositions.length];
   }
@@ -71,22 +78,10 @@ function NodeDot({
       r={2.5}
       fill="rgb(var(--color-primary))"
       fillOpacity={0.3}
-      initial={
-        staggeredReveal
-          ? { opacity: 0, scale: 0 }
-          : { opacity: 0.3 }
-      }
-      whileInView={
-        staggeredReveal
-          ? { opacity: 0.3, scale: 1 }
-          : {}
-      }
+      initial={staggeredReveal ? { opacity: 0, scale: 0 } : { opacity: 0.3 }}
+      whileInView={staggeredReveal ? { opacity: 0.3, scale: 1 } : {}}
       viewport={staggeredReveal ? { once: true } : undefined}
-      animate={
-        drift
-          ? { cy: [pos.y - 3, pos.y + 3, pos.y - 3] }
-          : {}
-      }
+      animate={drift ? { cy: [pos.y - 3, pos.y + 3, pos.y - 3] } : {}}
       transition={
         staggeredReveal
           ? { duration: 0.4, delay: index * 0.15, ease: "easeOut" }
@@ -130,6 +125,37 @@ function PulseDot({
   );
 }
 
+/**
+ * The highlight ring for the active node.
+ *
+ * It is an HTML element inside the node's own box rather than an SVG circle at
+ * the node coordinate, and that is what makes it exactly centred: the icon box
+ * is a fixed 40px while the SVG viewBox scales with the container, so an SVG
+ * ring could only ever line up at one particular container width. inset-0 on
+ * the size-10 box is centred at every width, and its radius is the icon box's
+ * radius — the label is a sibling and contributes nothing to it.
+ */
+function HighlightRing({ reduced }: { reduced: boolean }) {
+  if (reduced) {
+    return (
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 rounded-xl border border-primary/40"
+      />
+    );
+  }
+
+  return (
+    <motion.span
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 rounded-xl border border-primary"
+      initial={{ scale: 1, opacity: 0.7 }}
+      animate={{ scale: [1, 1.75], opacity: [0.7, 0] }}
+      transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
+    />
+  );
+}
+
 export function NodeNetworkDiagram({
   centerLabel,
   centerIcon: CenterIcon,
@@ -161,225 +187,238 @@ export function NodeNetworkDiagram({
     return () => clearInterval(id);
   }, [activeNodeCycle, total, inView, reduced]);
 
-  const mergedNodes = nodes.map((nd, i) => ({
-    ...nd,
-    _active: activeNodeCycle !== undefined && i === activeIndex,
-  }));
-
-  const dotTarget =
-    activeNodeCycle !== undefined && activeIndex !== null
-      ? getNodePosition(activeIndex, total, variant)
-      : null;
-
   return (
-    <div ref={containerRef} className={`relative aspect-square w-full max-w-sm ${className}`}>
-      <svg
-        viewBox="0 0 100 100"
-        className="h-full w-full"
-        aria-label={centerLabel ? `Network diagram centered on ${centerLabel}` : "Network diagram"}
-      >
-        <defs>
-          <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="rgb(var(--color-primary))" stopOpacity={0.2} />
-            <stop offset="100%" stopColor="rgb(var(--color-primary))" stopOpacity={0} />
-          </radialGradient>
-        </defs>
+    // The square is the coordinate system and the gutter sits outside it, so
+    // node percentages stay exact while labels keep room at every width.
+    <div ref={containerRef} className={`w-full max-w-md px-6 ${className}`}>
+      <div className="relative aspect-square w-full">
+        <svg
+          viewBox="0 0 100 100"
+          className="h-full w-full"
+          aria-label={
+            centerLabel
+              ? `Network diagram centered on ${centerLabel}`
+              : "Network diagram"
+          }
+        >
+          <defs>
+            <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
+              <stop
+                offset="0%"
+                stopColor="rgb(var(--color-primary))"
+                stopOpacity={0.2}
+              />
+              <stop
+                offset="100%"
+                stopColor="rgb(var(--color-primary))"
+                stopOpacity={0}
+              />
+            </radialGradient>
+          </defs>
 
-        <circle cx={50} cy={50} r={38} fill="url(#centerGlow)" />
+          <circle cx={CENTER.x} cy={CENTER.y} r={38} fill="url(#centerGlow)" />
 
-        {animated && !reduced && (
-          <>
-            {nodes.map((_, i) => {
+          {animated &&
+            !reduced &&
+            nodes.map((nd, i) => {
               const to = getNodePosition(i, total, variant);
-              if (to.x === 50 && to.y === 50) return null;
-              return <PulseDot key={i} from={{ x: 50, y: 50 }} to={to} index={i} />;
+              if (to.x === CENTER.x && to.y === CENTER.y) return null;
+              return <PulseDot key={nd.id} from={CENTER} to={to} index={i} />;
             })}
-          </>
-        )}
 
-        {nodes.map((nd, i) => {
-          const pos = getNodePosition(i, total, variant);
-          const isActive = activeNodeCycle !== undefined && i === activeIndex;
-          return (
-            <line
-              key={nd.id}
-              x1={50}
-              y1={50}
-              x2={pos.x}
-              y2={pos.y}
-              stroke={isActive ? "rgb(var(--color-primary))" : "rgb(var(--color-border))"}
-              strokeWidth={isActive ? 1.2 : 0.8}
-              strokeOpacity={isActive ? 0.8 : 0.6}
-            />
-          );
-        })}
+          {nodes.map((nd, i) => {
+            const pos = getNodePosition(i, total, variant);
+            const isActive = activeNodeCycle !== undefined && i === activeIndex;
+            return (
+              <line
+                key={nd.id}
+                x1={CENTER.x}
+                y1={CENTER.y}
+                x2={pos.x}
+                y2={pos.y}
+                stroke={
+                  isActive
+                    ? "rgb(var(--color-primary))"
+                    : "rgb(var(--color-border))"
+                }
+                strokeWidth={isActive ? 1.2 : 0.8}
+                strokeOpacity={isActive ? 0.8 : 0.15}
+              />
+            );
+          })}
 
-        {nodes.map((nd, i) => {
-          const pos = getNodePosition(i, total, variant);
-          return (
+          {nodes.map((nd, i) => (
             <NodeDot
               key={nd.id}
-              pos={pos}
+              pos={getNodePosition(i, total, variant)}
               index={i}
               variant={variant}
               staggeredReveal={staggeredReveal}
               reduced={reduced}
             />
+          ))}
+
+          {!staggeredReveal && (
+            <>
+              <motion.circle
+                cx={CENTER.x}
+                cy={CENTER.y}
+                r={centerRadius + 8}
+                fill="rgb(var(--color-primary) / 0.08)"
+                stroke="rgb(var(--color-border))"
+                strokeOpacity={0.15}
+                strokeWidth={1}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+              />
+              {reduced ? (
+                <circle
+                  cx={CENTER.x}
+                  cy={CENTER.y}
+                  r={centerRadius}
+                  fill="rgb(var(--color-primary))"
+                />
+              ) : (
+                <motion.circle
+                  cx={CENTER.x}
+                  cy={CENTER.y}
+                  r={centerRadius}
+                  fill="rgb(var(--color-primary))"
+                  animate={{
+                    r: [centerRadius, centerRadius + 1.5, centerRadius],
+                  }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                />
+              )}
+            </>
+          )}
+        </svg>
+
+        {nodes.map((nd, i) => {
+          const pos = getNodePosition(i, total, variant);
+          const NodeIcon = nd.icon;
+          const highlighted =
+            nd.highlighted === true ||
+            (activeNodeCycle !== undefined && i === activeIndex);
+          // Derived from the node's own offset from the centre, never a
+          // per-node flag: anything in the lower half puts its label ABOVE the
+          // icon box, so no label can run past the bottom edge of the square
+          // whatever the node positions happen to be.
+          const labelAbove = pos.y > CENTER.y;
+
+          // The positioned box is the icon box and nothing else — the label is
+          // absolutely positioned and adds no height — so the icon box centre
+          // lands exactly on the node coordinate the ring and the lines use.
+          const content = (
+            <span className="relative block size-10">
+              {highlighted && <HighlightRing reduced={reduced} />}
+
+              <span
+                className={`flex size-10 items-center justify-center rounded-xl border bg-surface/80 backdrop-blur-sm transition-colors duration-500 ${
+                  highlighted
+                    ? "border-primary/30 text-primary"
+                    : "border-border/15 text-foreground"
+                }`}
+              >
+                <NodeIcon className="size-4" />
+              </span>
+
+              <span
+                className={`absolute left-1/2 -translate-x-1/2 whitespace-nowrap text-center text-[10px] font-medium leading-tight transition-colors duration-500 ${
+                  labelAbove ? "bottom-full mb-1.5" : "top-full mt-1.5"
+                } ${highlighted ? "text-primary" : "text-muted"}`}
+              >
+                {nd.label}
+              </span>
+            </span>
+          );
+
+          const positionStyle = {
+            left: `${pos.x}%`,
+            top: `${pos.y}%`,
+            transform: "translate(-50%, -50%)",
+          };
+
+          if (nd.href) {
+            return (
+              <a
+                key={nd.id}
+                href={nd.href}
+                className="absolute rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                style={positionStyle}
+              >
+                {content}
+              </a>
+            );
+          }
+
+          return (
+            <div key={nd.id} className="absolute" style={positionStyle}>
+              <motion.div
+                initial={staggeredReveal ? { opacity: 0, scale: 0.6 } : {}}
+                whileInView={staggeredReveal ? { opacity: 1, scale: 1 } : {}}
+                viewport={staggeredReveal ? { once: true } : undefined}
+                transition={
+                  staggeredReveal
+                    ? { duration: 0.35, delay: i * 0.15, ease: "easeOut" }
+                    : {}
+                }
+              >
+                {content}
+              </motion.div>
+            </div>
           );
         })}
 
-        {activeNodeCycle && dotTarget && !reduced && (
-          <motion.circle
-            r={3.5}
-            fill="rgb(var(--color-primary))"
-            animate={{ cx: dotTarget.x, cy: dotTarget.y }}
-            transition={{ duration: 0.7, ease: "easeInOut" }}
-          />
-        )}
-
-        {!staggeredReveal && (
-          <>
-            <motion.circle
-              cx={50}
-              cy={50}
-              r={centerRadius + 8}
-              fill="rgb(var(--color-primary) / 0.08)"
-              stroke="rgb(var(--color-border))"
-              strokeWidth={1}
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-            />
-            {reduced ? (
-              <circle
-                cx={50}
-                cy={50}
-                r={centerRadius}
-                fill="rgb(var(--color-primary))"
-              />
-            ) : (
-              <motion.circle
-                cx={50}
-                cy={50}
-                r={centerRadius}
-                fill="rgb(var(--color-primary))"
-                animate={{ r: [centerRadius, centerRadius + 1.5, centerRadius] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              />
-            )}
-          </>
-        )}
-      </svg>
-
-      {mergedNodes.map((nd, i) => {
-        const pos = getNodePosition(i, total, variant);
-        const NodeIcon = nd.icon;
-        const isActive = activeNodeCycle !== undefined && i === activeIndex;
-
-        const content = (
+        {centerLabel && !staggeredReveal && (
           <div
-            className={`absolute flex flex-col items-center gap-1 transition-colors duration-500 ${
-              isActive || nd.highlighted ? "text-primary" : "text-foreground"
-            }`}
-            style={{ left: `${pos.x}%`, top: `${pos.y}%`, transform: "translate(-50%, -50%)" }}
+            className="absolute flex flex-col items-center gap-0.5"
+            style={{
+              left: "50%",
+              top: "50%",
+              transform: "translate(-50%, -50%)",
+            }}
           >
-            <div
-              className={`flex size-10 items-center justify-center rounded-xl border bg-surface/80 backdrop-blur-sm transition-colors duration-500 ${
-                isActive || nd.highlighted
-                  ? "border-primary/30 text-primary"
-                  : "border-border text-foreground"
-              }`}
-            >
-              <NodeIcon className="size-4" />
-            </div>
-            <span
-              className={`select-none text-center text-[10px] font-medium leading-tight transition-colors duration-500 ${
-                isActive || nd.highlighted ? "text-primary" : "text-muted"
-              }`}
-            >
-              {nd.label}
+            {CenterIcon && (
+              <div className="flex size-8 items-center justify-center rounded-full bg-primary text-white">
+                <CenterIcon className="size-4" />
+              </div>
+            )}
+            <span className="text-xs font-semibold text-foreground">
+              {centerLabel}
             </span>
           </div>
-        );
+        )}
 
-        if (nd.href) {
-          return (
-            <a
-              key={nd.id}
-              href={nd.href}
-              className="absolute block"
-              style={{ left: `${pos.x}%`, top: `${pos.y}%`, transform: "translate(-50%, -50%)" }}
-            >
-              {content}
-            </a>
-          );
-        }
-
-        return (
-          <div
-            key={nd.id}
-            className="absolute"
-            style={{ left: `${pos.x}%`, top: `${pos.y}%`, transform: "translate(-50%, -50%)" }}
+        {centerLabel && staggeredReveal && (
+          <motion.div
+            className="absolute flex flex-col items-center gap-0.5"
+            style={{
+              left: "50%",
+              top: "50%",
+              transform: "translate(-50%, -50%)",
+            }}
+            initial={{ opacity: 0, scale: 0 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <motion.div
-              initial={
-                staggeredReveal
-                  ? { opacity: 0, scale: 0.6 }
-                  : {}
-              }
-              whileInView={
-                staggeredReveal
-                  ? { opacity: 1, scale: 1 }
-                  : {}
-              }
-              viewport={staggeredReveal ? { once: true } : undefined}
-              transition={
-                staggeredReveal
-                  ? { duration: 0.35, delay: i * 0.15, ease: "easeOut" }
-                  : {}
-              }
-            >
-              {content}
-            </motion.div>
-          </div>
-        );
-      })}
-
-      {centerLabel && !staggeredReveal && (
-        <div
-          className="absolute flex flex-col items-center gap-0.5"
-          style={{ left: "50%", top: "50%", transform: "translate(-50%, -50%)" }}
-        >
-          {CenterIcon && (
-            <div className="flex size-8 items-center justify-center rounded-full bg-primary text-white">
-              <CenterIcon className="size-4" />
-            </div>
-          )}
-          <span className="text-xs font-semibold text-foreground">
-            {centerLabel}
-          </span>
-        </div>
-      )}
-
-      {centerLabel && staggeredReveal && (
-        <motion.div
-          className="absolute flex flex-col items-center gap-0.5"
-          style={{ left: "50%", top: "50%", transform: "translate(-50%, -50%)" }}
-          initial={{ opacity: 0, scale: 0 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-        >
-          {CenterIcon && (
-            <div className="flex size-8 items-center justify-center rounded-full bg-primary text-white">
-              <CenterIcon className="size-4" />
-            </div>
-          )}
-          <span className="text-xs font-semibold text-foreground">
-            {centerLabel}
-          </span>
-        </motion.div>
-      )}
+            {CenterIcon && (
+              <div className="flex size-8 items-center justify-center rounded-full bg-primary text-white">
+                <CenterIcon className="size-4" />
+              </div>
+            )}
+            <span className="text-xs font-semibold text-foreground">
+              {centerLabel}
+            </span>
+          </motion.div>
+        )}
+      </div>
     </div>
   );
 }

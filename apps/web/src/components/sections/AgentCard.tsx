@@ -9,9 +9,8 @@ import {
   Crown,
   type LucideIcon,
 } from "lucide-react";
-import { Card } from "@/components/ui/Card";
+import Link from "next/link";
 import { IconBox } from "@/components/ui/IconBox";
-import { LinkArrow } from "@/components/ui/LinkArrow";
 import type { AgentProfile } from "@ai-software-house/shared-types";
 
 const iconMap: Record<string, LucideIcon> = {
@@ -28,24 +27,37 @@ interface AgentCardProps {
   descriptionLength?: number;
 }
 
-export function AgentCard({ agent, descriptionLength = 130 }: AgentCardProps) {
+export function AgentCard({ agent, descriptionLength = 140 }: AgentCardProps) {
   const Icon = iconMap[agent.icon] ?? Headphones;
 
   return (
-    <Card
-      icon={
-        <IconBox color="primary">
-          <Icon className="size-5" />
-        </IconBox>
-      }
-      title={agent.name}
-      className="flex h-full flex-col"
+    <Link
+      href={`/ai-employees/${agent.slug}`}
+      className="group flex h-full flex-col rounded-2xl border border-border/10 bg-background p-7 transition-all duration-300 hover:border-primary/30 hover:bg-surface/60 hover:shadow-[0_12px_32px_-16px_rgb(0_0_0/0.5)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
     >
-      <p className="mb-4 flex-1 text-sm leading-relaxed text-muted">
+      <IconBox color="primary">
+        <Icon className="size-5" />
+      </IconBox>
+
+      <h3 className="mt-5 text-lg font-semibold text-foreground">
+        {agent.name}
+      </h3>
+      <p className="mt-1 text-sm text-primary">{agent.tagline}</p>
+
+      <p className="mt-3 flex-1 text-sm leading-relaxed text-muted">
         {agent.description.slice(0, descriptionLength)}
-        {agent.description.length > descriptionLength ? "…" : ""}
+        {agent.description.length > descriptionLength ? "\u2026" : ""}
       </p>
-      <LinkArrow href={`/ai-employees/${agent.slug}`}>Learn more</LinkArrow>
-    </Card>
+
+      <span className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-primary">
+        Learn more
+        <span
+          aria-hidden="true"
+          className="inline-block transition-transform duration-200 ease-out group-hover:translate-x-1 motion-reduce:transform-none"
+        >
+          &rarr;
+        </span>
+      </span>
+    </Link>
   );
 }

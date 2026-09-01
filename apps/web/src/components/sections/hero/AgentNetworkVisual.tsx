@@ -1,286 +1,226 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useTheme } from "next-themes";
-import { motion } from "framer-motion";
-import { agents } from "@/config/agents";
+import { motion, useReducedMotion } from "framer-motion";
+import {
+  Headphones,
+  TrendingUp,
+  Wallet,
+  Search,
+  FileText,
+  Crown,
+  type LucideIcon,
+} from "lucide-react";
 
-const RADIUS = 110;
-const CENTER = 140;
-const NODE_SIZE = 28;
+/**
+ * The one showpiece animation on the site.
+ *
+ * Instead of an endless decorative orbit, this renders the actual value
+ * proposition as a loop: a task leaves the hub, travels to the department
+ * that owns it, that node lights up and does the work, and a result
+ * returns to the hub. Then the next department takes a turn.
+ *
+ * Everything is transform + opacity. Reduced motion gets the static diagram.
+ */
 
-const agentIcons: Record<string, string> = {
-  support: "S",
-  sales: "T",
-  finance: "F",
-  research: "R",
-  document: "D",
-  "executive-assistant": "E",
+type Node = {
+  id: string;
+  label: string;
+  icon: LucideIcon;
+  /** SVG-space coordinates in a 280x280 box. */
+  x: number;
+  y: number;
+  /** Percentage position for the HTML chip overlay. */
+  left: string;
+  top: string;
+  task: string;
 };
 
-function useReducedMotion() {
-  const [prefersReduced, setPrefersReduced] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setPrefersReduced(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setPrefersReduced(e.matches);
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
-  return prefersReduced;
-}
+const CENTER = { x: 140, y: 140 };
 
-function useIsMobile() {
-  const [mobile, setMobile] = useState(true);
-  useEffect(() => {
-    const check = () => setMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-  return mobile;
-}
+const NODES: Node[] = [
+  { id: "support", label: "Support", icon: Headphones, x: 140, y: 35, left: "50%", top: "12.5%", task: "Ticket #4821" },
+  { id: "sales", label: "Sales", icon: TrendingUp, x: 231, y: 87, left: "82.5%", top: "31.25%", task: "Inbound lead" },
+  { id: "finance", label: "Finance", icon: Wallet, x: 231, y: 193, left: "82.5%", top: "68.75%", task: "Invoice batch" },
+  { id: "research", label: "Research", icon: Search, x: 140, y: 245, left: "50%", top: "87.5%", task: "Market brief" },
+  { id: "document", label: "Documents", icon: FileText, x: 49, y: 193, left: "17.5%", top: "68.75%", task: "Draft proposal" },
+  { id: "assistant", label: "Assistant", icon: Crown, x: 49, y: 87, left: "17.5%", top: "31.25%", task: "Schedule sync" },
+];
 
-const THEME_COLORS = {
-  dark: {
-    primary: "#F87171",
-    foreground: "#FAFAFA",
-  },
-  light: {
-    primary: "#DC2626",
-    foreground: "#0A0A0A",
-  },
-} as const;
-
-function Node({
-  index,
-  total,
-  label,
-  primaryColor,
-}: {
-  index: number;
-  total: number;
-  label: string;
-  primaryColor: string;
-}) {
-  const reduced = useReducedMotion();
-  const mobile = useIsMobile();
-  const angle = (index / total) * Math.PI * 2;
-  const orbitRadius = mobile ? 70 : RADIUS;
-  const orbitX = CENTER + orbitRadius * Math.cos(angle);
-  const orbitY = CENTER + orbitRadius * Math.sin(angle);
-
-  return (
-    <motion.g
-      initial={false}
-      animate={
-        reduced
-          ? { x: orbitX - NODE_SIZE / 2, y: orbitY - NODE_SIZE / 2 }
-          : {
-              x: [
-                CENTER + orbitRadius * Math.cos(angle) - NODE_SIZE / 2,
-                CENTER +
-                  orbitRadius * Math.cos(angle + Math.PI / 3) -
-                  NODE_SIZE / 2,
-                CENTER +
-                  orbitRadius * Math.cos(angle + (2 * Math.PI) / 3) -
-                  NODE_SIZE / 2,
-                CENTER + orbitRadius * Math.cos(angle + Math.PI) - NODE_SIZE / 2,
-                CENTER +
-                  orbitRadius * Math.cos(angle + (4 * Math.PI) / 3) -
-                  NODE_SIZE / 2,
-                CENTER +
-                  orbitRadius * Math.cos(angle + (5 * Math.PI) / 3) -
-                  NODE_SIZE / 2,
-                CENTER + orbitRadius * Math.cos(angle) - NODE_SIZE / 2,
-              ],
-              y: [
-                CENTER + orbitRadius * Math.sin(angle) - NODE_SIZE / 2,
-                CENTER +
-                  orbitRadius * Math.sin(angle + Math.PI / 3) -
-                  NODE_SIZE / 2,
-                CENTER +
-                  orbitRadius * Math.sin(angle + (2 * Math.PI) / 3) -
-                  NODE_SIZE / 2,
-                CENTER + orbitRadius * Math.sin(angle + Math.PI) - NODE_SIZE / 2,
-                CENTER +
-                  orbitRadius * Math.sin(angle + (4 * Math.PI) / 3) -
-                  NODE_SIZE / 2,
-                CENTER +
-                  orbitRadius * Math.sin(angle + (5 * Math.PI) / 3) -
-                  NODE_SIZE / 2,
-                CENTER + orbitRadius * Math.sin(angle) - NODE_SIZE / 2,
-              ],
-            }
-      }
-      transition={
-        reduced
-          ? { duration: 0 }
-          : {
-              duration: 20,
-              repeat: Infinity,
-              ease: "linear",
-            }
-      }
-    >
-      <motion.circle
-        r={NODE_SIZE / 2}
-        fill={primaryColor}
-        fillOpacity={0.15}
-        stroke={primaryColor}
-        strokeWidth={1.5}
-        whileHover={{ scale: 1.2 }}
-      />
-      <text
-        x={0}
-        y={0}
-        textAnchor="middle"
-        dominantBaseline="central"
-        fill={primaryColor}
-        fontSize={11}
-        fontWeight={600}
-      >
-        {agentIcons[label] ?? label[0].toUpperCase()}
-      </text>
-    </motion.g>
-  );
-}
-
-function ConnectionLine({
-  index,
-  total,
-  primaryColor,
-}: {
-  index: number;
-  total: number;
-  primaryColor: string;
-}) {
-  const reduced = useReducedMotion();
-  const mobile = useIsMobile();
-  const orbitRadius = mobile ? 70 : RADIUS;
-  const angle = (index / total) * Math.PI * 2;
-  const x2 = CENTER + orbitRadius * Math.cos(angle);
-  const y2 = CENTER + orbitRadius * Math.sin(angle);
-
-  return (
-    <motion.line
-      x1={CENTER}
-      y1={CENTER}
-      x2={x2}
-      y2={y2}
-      stroke={primaryColor}
-      strokeOpacity={0.2}
-      strokeWidth={1}
-      initial={{ pathLength: 0, opacity: 0 }}
-      animate={
-        reduced
-          ? { pathLength: 1, opacity: 0.2 }
-          : { pathLength: 1, opacity: [0.1, 0.3, 0.1] }
-      }
-      transition={
-        reduced
-          ? { duration: 1 }
-          : { duration: 1.5, delay: index * 0.2, repeat: Infinity, repeatDelay: 3 }
-      }
-    />
-  );
-}
+const CYCLE_MS = 2600;
 
 export function AgentNetworkVisual() {
-  const { resolvedTheme } = useTheme();
   const reduced = useReducedMotion();
-  const mobile = useIsMobile();
-  const [mounted, setMounted] = useState(false);
+  const [active, setActive] = useState(0);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    if (reduced) return;
+    const id = window.setInterval(
+      () => setActive((i) => (i + 1) % NODES.length),
+      CYCLE_MS
+    );
+    return () => window.clearInterval(id);
+  }, [reduced]);
 
-  const theme = mounted && resolvedTheme === "dark" ? "dark" : "light";
-  const colors = THEME_COLORS[theme];
-
-  const size = mobile ? 200 : 280;
+  const activeNode = NODES[active];
 
   return (
-    <div className="flex items-center justify-center">
+    <div
+      className="relative aspect-square w-full max-w-[420px]"
+      role="img"
+      aria-label="AI agents receiving work from a central hub and returning completed results"
+    >
       <svg
-        width={size}
-        height={size}
         viewBox="0 0 280 280"
-        className="overflow-visible"
-        aria-label="Network visualization showing AI Employees connected to a central hub"
+        className="absolute inset-0 size-full overflow-visible"
+        aria-hidden="true"
       >
-        <defs>
-          <radialGradient id="hubGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor={colors.primary} stopOpacity={0.3} />
-            <stop offset="100%" stopColor={colors.primary} stopOpacity={0} />
-          </radialGradient>
-        </defs>
+        {/* ambient field */}
+        <circle
+          cx={CENTER.x}
+          cy={CENTER.y}
+          r="88"
+          className="fill-primary/[0.06]"
+        />
 
-        <circle cx={CENTER} cy={CENTER} r={80} fill="url(#hubGlow)" />
-
-        {agents.map((_, i) => (
-          <ConnectionLine
-            key={i}
-            index={i}
-            total={agents.length}
-            primaryColor={colors.primary}
+        {/* connections */}
+        {NODES.map((n, i) => (
+          <line
+            key={n.id}
+            x1={CENTER.x}
+            y1={CENTER.y}
+            x2={n.x}
+            y2={n.y}
+            strokeWidth={i === active ? 1.5 : 1}
+            strokeDasharray="3 5"
+            className={
+              i === active
+                ? "stroke-primary/60 transition-all duration-500"
+                : "stroke-primary/15 transition-all duration-500"
+            }
           />
         ))}
 
-        <motion.circle
-          cx={CENTER}
-          cy={CENTER}
-          r={22}
-          fill={colors.primary}
-          fillOpacity={0.2}
-          stroke={colors.primary}
-          strokeWidth={2}
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-        />
-        <motion.circle
-          cx={CENTER}
-          cy={CENTER}
-          r={reduced ? 14 : 14}
-          fill={colors.primary}
-          animate={reduced ? {} : { r: [14, 16, 14] }}
-          transition={
-            reduced
-              ? {}
-              : { duration: 3, repeat: Infinity, ease: "easeInOut" }
-          }
-        />
-
-        <motion.g
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 1.5 }}
-        >
-          <text
-            x={CENTER}
-            y={CENTER - 1}
-            textAnchor="middle"
-            dominantBaseline="central"
-            fill={colors.foreground}
-            fontSize={10}
-            fontWeight={700}
-          >
-            AI
-          </text>
-        </motion.g>
-
-        {agents.map((a, i) => (
-          <Node
-            key={a.slug}
-            index={i}
-            total={agents.length}
-            label={a.slug}
-            primaryColor={colors.primary}
+        {/* outbound task packet */}
+        {!reduced && (
+          <motion.circle
+            key={`out-${active}`}
+            r="4"
+            className="fill-primary"
+            initial={{ cx: CENTER.x, cy: CENTER.y, opacity: 0 }}
+            animate={{
+              cx: [CENTER.x, activeNode.x],
+              cy: [CENTER.y, activeNode.y],
+              opacity: [0, 1, 1, 0],
+            }}
+            transition={{ duration: 0.9, ease: [0.4, 0, 0.2, 1], times: [0, 0.15, 0.85, 1] }}
           />
-        ))}
+        )}
+
+        {/* returning result */}
+        {!reduced && (
+          <motion.circle
+            key={`in-${active}`}
+            r="3"
+            className="fill-primary/60"
+            initial={{ cx: activeNode.x, cy: activeNode.y, opacity: 0 }}
+            animate={{
+              cx: [activeNode.x, CENTER.x],
+              cy: [activeNode.y, CENTER.y],
+              opacity: [0, 1, 1, 0],
+            }}
+            transition={{
+              duration: 0.9,
+              delay: 1.3,
+              ease: [0.4, 0, 0.2, 1],
+              times: [0, 0.15, 0.85, 1],
+            }}
+          />
+        )}
+
       </svg>
+
+      {/* department chips */}
+      {NODES.map((n, i) => {
+        const Icon = n.icon;
+        const isActive = i === active;
+        // Derived from the node's own offset from the hub, not a per-node flag:
+        // nodes in the lower half put their label ABOVE the icon so it can never
+        // run past the bottom edge of the square.
+        const labelAbove = n.y > CENTER.y;
+
+        return (
+          <div
+            key={n.id}
+            // the wrapper is exactly the size of the icon box — the label is
+            // absolutely positioned and so contributes no height. That makes the
+            // icon box centre land precisely on (n.x, n.y).
+            className="absolute -translate-x-1/2 -translate-y-1/2"
+            style={{ left: n.left, top: n.top }}
+          >
+            <div className="relative size-11">
+              {/* work-received pulse — sized to and centred on the icon box
+                  alone, so it can never read as shifted. Motion only. */}
+              {!reduced && isActive && (
+                <motion.span
+                  key={`pulse-${active}`}
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 rounded-2xl border border-primary"
+                  initial={{ scale: 1, opacity: 0 }}
+                  animate={{ scale: 1.9, opacity: [0.8, 0] }}
+                  transition={{ duration: 1.1, delay: 0.85, ease: "easeOut" }}
+                />
+              )}
+
+              <motion.div
+                animate={reduced ? undefined : { scale: isActive ? 1.12 : 1 }}
+                transition={{ type: "spring", stiffness: 320, damping: 18 }}
+                className={`flex size-11 items-center justify-center rounded-2xl border bg-background transition-colors duration-500 ${
+                  isActive
+                    ? "border-primary/70 text-primary"
+                    : "border-border/15 text-muted"
+                }`}
+              >
+                <Icon className="size-[18px]" />
+              </motion.div>
+
+              <span
+                className={`absolute left-1/2 -translate-x-1/2 whitespace-nowrap text-center text-[11px] font-medium transition-colors duration-500 ${
+                  labelAbove ? "bottom-full mb-2" : "top-full mt-2"
+                } ${isActive ? "text-foreground" : "text-muted/60"}`}
+              >
+                {n.label}
+              </span>
+            </div>
+          </div>
+        );
+      })}
+
+      {/* hub */}
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+        <motion.div
+          animate={reduced ? undefined : { scale: [1, 1.05, 1] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          className="flex size-16 items-center justify-center rounded-full border-2 border-primary bg-background"
+        >
+          <span className="text-[11px] font-semibold tracking-wide text-primary">
+            HUB
+          </span>
+        </motion.div>
+      </div>
+
+      {/* live caption — tells the viewer what they're watching */}
+      <div className="absolute inset-x-0 -bottom-2 flex justify-center">
+        <motion.span
+          key={`cap-${active}`}
+          initial={reduced ? { opacity: 1 } : { opacity: 0, y: 4 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="rounded-full border border-border/10 bg-surface/70 px-3 py-1 font-mono text-[11px] text-muted backdrop-blur"
+        >
+          {activeNode.task} &rarr; {activeNode.label}
+        </motion.span>
+      </div>
     </div>
   );
 }

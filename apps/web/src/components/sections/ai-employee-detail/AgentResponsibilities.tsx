@@ -7,7 +7,7 @@ interface AgentResponsibilitiesProps {
 
 export function AgentResponsibilities({ agent }: AgentResponsibilitiesProps) {
   return (
-    <section className="px-4 py-24 md:px-8">
+    <section className="px-4 py-20 md:px-8 md:py-28">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 max-w-2xl">
           <SectionHeading
@@ -20,7 +20,7 @@ export function AgentResponsibilities({ agent }: AgentResponsibilitiesProps) {
           {agent.responsibilities.map((item, i) => (
             <div
               key={i}
-              className="flex items-start gap-4 rounded-2xl border border-border bg-surface/60 p-5"
+              className="flex items-start gap-4 rounded-2xl border border-border/15 bg-surface/60 p-5"
             >
               <span className="mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 font-serif text-sm font-semibold text-primary">
                 {String(i + 1).padStart(2, "0")}

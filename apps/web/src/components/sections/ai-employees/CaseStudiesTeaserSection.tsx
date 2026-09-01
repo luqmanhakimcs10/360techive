@@ -8,7 +8,7 @@ import { IconBox } from "@/components/ui/IconBox";
 
 export function CaseStudiesTeaserSection() {
   return (
-    <section className="border-y border-border px-4 py-24 md:px-8">
+    <section className="border-y border-border/10 px-4 py-20 md:px-8 md:py-28">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 max-w-2xl">
           <SectionHeading
@@ -45,7 +45,7 @@ export function CaseStudiesTeaserSection() {
             </p>
           </Card>
 
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-border bg-surface/60 p-8 text-center">
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-border/15 bg-surface/60 p-8 text-center">
             <IconBox color="surface">
               <FileText className="size-5" />
             </IconBox>

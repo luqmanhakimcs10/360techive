@@ -8,10 +8,11 @@ interface AgentBusinessBenefitsProps {
 
 export function AgentBusinessBenefits({ agent }: AgentBusinessBenefitsProps) {
   return (
-    <section className="px-4 py-24 md:px-8">
+    <section className="px-4 py-20 md:px-8 md:py-28">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-12 max-w-2xl">
+        <div className="mx-auto mb-12 max-w-3xl">
           <SectionHeading
+            align="center"
             title="What your business"
             accent="gains from this agent."
           />

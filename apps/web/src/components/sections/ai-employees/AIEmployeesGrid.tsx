@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Badge } from "@/components/ui/Badge";
 import { AgentCard } from "@/components/sections/AgentCard";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { agents } from "@/config/agents";
@@ -27,7 +26,7 @@ export function AIEmployeesGrid() {
       : agents.filter((a) => a.department === activeDept);
 
   return (
-    <section className="px-4 py-24 md:px-8">
+    <section className="px-4 py-20 md:px-8 md:py-28">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 max-w-2xl">
           <SectionHeading
@@ -49,7 +48,7 @@ export function AIEmployeesGrid() {
               className={`rounded-full border px-4 py-1.5 text-xs font-medium uppercase tracking-wider transition-colors ${
                 activeDept === dept.value
                   ? "border-primary bg-primary/10 text-primary"
-                  : "border-border text-muted hover:border-foreground/20 hover:text-foreground"
+                  : "border-border/15 text-muted hover:border-foreground/20 hover:text-foreground"
               }`}
             >
               {dept.label}

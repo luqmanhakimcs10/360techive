@@ -25,7 +25,7 @@ const diagramNodes = agents.map((a) => ({
 
 export function GrowthSection() {
   return (
-    <section className="px-4 py-24 md:px-8">
+    <section className="px-4 py-20 md:px-8 md:py-28">
       <div className="mx-auto max-w-7xl">
         <div className="grid items-center gap-12 md:grid-cols-2">
           <RevealOnScroll direction="left">

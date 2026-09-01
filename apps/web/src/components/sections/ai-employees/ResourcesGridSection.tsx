@@ -6,7 +6,7 @@ import { resourceTopics } from "@/config/resources";
 
 export function ResourcesGridSection() {
   return (
-    <section className="px-4 py-24 md:px-8">
+    <section className="px-4 py-20 md:px-8 md:py-28">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 max-w-2xl">
           <SectionHeading title="Dive" accent="deeper." />

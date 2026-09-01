@@ -4,7 +4,7 @@ import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
 
 export function TestimonialsSection() {
   return (
-    <section className="px-4 py-24 md:px-8">
+    <section className="px-4 py-20 md:px-8 md:py-28">
       <div className="mx-auto max-w-7xl">
         <div className="mb-16 max-w-2xl">
           <SectionHeading
@@ -22,7 +22,7 @@ export function TestimonialsSection() {
                 team can finally focus on complex cases instead of password
                 resets.&rdquo;
               </blockquote>
-              <div className="mt-6 border-t border-border pt-4">
+              <div className="mt-6 border-t border-border/10 pt-4">
                 <p className="text-sm font-medium text-foreground">
                   — Client Name, Head of Customer Experience
                 </p>
@@ -38,7 +38,7 @@ export function TestimonialsSection() {
                 touchpoints automatically and passes warm leads straight to our
                 closers.&rdquo;
               </blockquote>
-              <div className="mt-6 border-t border-border pt-4">
+              <div className="mt-6 border-t border-border/10 pt-4">
                 <p className="text-sm font-medium text-foreground">
                   — Client Name, VP of Sales
                 </p>
@@ -53,7 +53,7 @@ export function TestimonialsSection() {
                 product line and got it in five seconds. That used to take a human
                 analyst half a day. It&apos;s become our default dashboard.&rdquo;
               </blockquote>
-              <div className="mt-6 border-t border-border pt-4">
+              <div className="mt-6 border-t border-border/10 pt-4">
                 <p className="text-sm font-medium text-foreground">
                   — Client Name, Finance Director
                 </p>

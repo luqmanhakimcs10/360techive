@@ -1,57 +1,57 @@
 import { Accordion } from "@/components/ui/Accordion";
+import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { RevealOnScroll } from "@/components/ui/RevealOnScroll";
+import { Reveal } from "@/components/ui/Reveal";
 
 const faqs = [
   {
+    label: "Which businesses is this actually worth it for?",
+    content:
+      "Established businesses with recurring, knowledge-heavy processes — sales, support, finance, operations. Industry-agnostic. The test isn't your sector, it's whether the same kind of work happens repeatedly.",
+  },
+  {
     label: "What's the difference between an AI Employee and a chatbot?",
     content:
-      "A chatbot answers questions in a chat window. An AI Employee is a persistent autonomous agent connected to your tools — it can create tickets, update CRM records, generate invoices, schedule meetings, and take actions across multiple systems without a human in the loop. Think of it as a new team member, not a FAQ interface.",
+      "A chatbot answers questions in a chat window. An AI Employee is a persistent autonomous agent connected to your tools — it creates tickets, updates CRM records, generates invoices and schedules meetings across multiple systems without a human in the loop. A team member, not an FAQ interface.",
   },
   {
-    label: "How long does it take to deploy an AI Employee?",
+    label: "How long until something is actually running?",
     content:
-      "Most agents are integrated and producing value within two to four weeks. The timeline depends on how many data sources and tools the agent needs to connect to, and whether custom workflows are required. Discovery and architecture design happen in the first week.",
+      "The first productive agent is typically live within two to four weeks. We start with the use case that pays for itself fastest and build outward from there. Discovery and architecture happen in week one.",
   },
   {
-    label: "Is my data secure?",
+    label: "What happens to our data?",
     content:
-      "Yes. Each agent operates within your own infrastructure or a dedicated virtual private cloud. Data is encrypted at rest and in transit. We never train our base models on your data, and you retain full control over access permissions and retention policies. SOC 2 compliance is in place for our platform layer.",
+      "Your data stays yours. Each agent operates within your own infrastructure or a dedicated private cloud, around a knowledge base you own. Encrypted at rest and in transit, with explicit access and retention rules. We never train base models on your data.",
   },
   {
-    label: "Can AI Employees integrate with our existing tools?",
+    label: "Do we need AI expertise on the team?",
     content:
-      "We support direct integrations with major CRM, helpdesk, accounting, calendar, and document platforms via API — including Salesforce, HubSpot, Zendesk, Stripe, QuickBooks, Google Workspace, and Microsoft 365. Custom API integrations for internal tools are part of every deployment.",
+      "No. We build, operate and improve the agents for you — agent-as-a-service. You keep control of scope and policy without having to hire for model engineering.",
   },
   {
-    label: "What does it cost?",
+    label: "Is this just ChatGPT with a different interface?",
     content:
-      "Pricing is per-agent, per-month, with volume discounts for deploying multiple agents. Each plan includes integration, monitoring, and continuous improvement. Custom pricing is available for enterprise deployments with dedicated infrastructure or compliance requirements.",
-  },
-  {
-    label: "Do we need technical staff to maintain this?",
-    content:
-      "No. We handle deployment, monitoring, updates, and retraining as part of the service. Your team interacts with each agent through its native interface — no code changes required on your end. If a workflow changes, we adjust the agent configuration for you.",
+      "No. These are custom multi-agent systems connected to your tools and data and trained on your processes. The value is in the integration and the knowledge base underneath, not the model.",
   },
 ];
 
 export function FAQSection() {
   return (
-    <section className="border-y border-border px-4 py-24 md:px-8">
-      <div className="mx-auto max-w-7xl">
-        <RevealOnScroll>
-          <div className="mb-16 max-w-2xl">
-            <SectionHeading
-              title="Frequently asked"
-              accent="questions."
-            />
-          </div>
-        </RevealOnScroll>
+    <Section tone="tinted">
+      <Reveal>
+        <SectionHeading
+          align="center"
+          className="max-w-3xl"
+          eyebrow="Before you ask"
+          title="Frequently asked"
+          accent="questions."
+        />
+      </Reveal>
 
-        <RevealOnScroll>
-          <Accordion items={faqs} />
-        </RevealOnScroll>
-      </div>
-    </section>
+      <Reveal className="mt-12">
+        <Accordion items={faqs} />
+      </Reveal>
+    </Section>
   );
 }

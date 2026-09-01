@@ -14,7 +14,7 @@ export function RelatedAgents({ current }: RelatedAgentsProps) {
   const others = agents.filter((a) => a.slug !== current.slug).slice(0, 3);
 
   return (
-    <section className="border-y border-border px-4 py-24 md:px-8">
+    <section className="border-y border-border/10 px-4 py-20 md:px-8 md:py-28">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12">
           <SectionHeading title="Explore other" accent="AI Employees." />

@@ -1,6 +1,6 @@
 export function TrustedBySection() {
   return (
-    <section className="border-y border-border px-4 py-12 md:px-8">
+    <section className="border-y border-border/10 px-4 py-12 md:px-8">
       <div className="mx-auto max-w-7xl">
         <p className="mb-8 text-center text-xs font-semibold uppercase tracking-widest text-muted">
           Trusted by teams at

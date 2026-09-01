@@ -23,7 +23,7 @@ function AccordionItem({
   onToggle: () => void;
 }) {
   return (
-    <div className="border-b border-border">
+    <div className="border-b border-border/10">
       <button
         onClick={onToggle}
         className="flex w-full items-center justify-between gap-4 py-5 text-left text-sm font-medium text-foreground transition-colors hover:text-primary"
