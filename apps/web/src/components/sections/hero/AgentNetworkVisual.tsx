@@ -138,54 +138,60 @@ export function AgentNetworkVisual() {
           />
         )}
 
-        {/* work-received pulse on the active node */}
-        {!reduced && (
-          <motion.circle
-            key={`pulse-${active}`}
-            cx={activeNode.x}
-            cy={activeNode.y}
-            r="20"
-            fill="none"
-            strokeWidth="1.5"
-            className="stroke-primary"
-            initial={{ scale: 1, opacity: 0 }}
-            animate={{ scale: [1, 1.9], opacity: [0.8, 0] }}
-            style={{ transformOrigin: `${activeNode.x}px ${activeNode.y}px` }}
-            transition={{ duration: 1.1, delay: 0.85, ease: "easeOut" }}
-          />
-        )}
       </svg>
 
       {/* department chips */}
       {NODES.map((n, i) => {
         const Icon = n.icon;
         const isActive = i === active;
+        // Derived from the node's own offset from the hub, not a per-node flag:
+        // nodes in the lower half put their label ABOVE the icon so it can never
+        // run past the bottom edge of the square.
+        const labelAbove = n.y > CENTER.y;
+
         return (
           <div
             key={n.id}
+            // the wrapper is exactly the size of the icon box — the label is
+            // absolutely positioned and so contributes no height. That makes the
+            // icon box centre land precisely on (n.x, n.y).
             className="absolute -translate-x-1/2 -translate-y-1/2"
             style={{ left: n.left, top: n.top }}
           >
-            <motion.div
-              animate={
-                reduced ? undefined : { scale: isActive ? 1.12 : 1 }
-              }
-              transition={{ type: "spring", stiffness: 320, damping: 18 }}
-              className={`flex size-11 items-center justify-center rounded-2xl border bg-background transition-colors duration-500 ${
-                isActive
-                  ? "border-primary/70 text-primary"
-                  : "border-border/15 text-muted"
-              }`}
-            >
-              <Icon className="size-[18px]" />
-            </motion.div>
-            <span
-              className={`mt-2 block whitespace-nowrap text-center text-[11px] font-medium transition-colors duration-500 ${
-                isActive ? "text-foreground" : "text-muted/60"
-              }`}
-            >
-              {n.label}
-            </span>
+            <div className="relative size-11">
+              {/* work-received pulse — sized to and centred on the icon box
+                  alone, so it can never read as shifted. Motion only. */}
+              {!reduced && isActive && (
+                <motion.span
+                  key={`pulse-${active}`}
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 rounded-2xl border border-primary"
+                  initial={{ scale: 1, opacity: 0 }}
+                  animate={{ scale: 1.9, opacity: [0.8, 0] }}
+                  transition={{ duration: 1.1, delay: 0.85, ease: "easeOut" }}
+                />
+              )}
+
+              <motion.div
+                animate={reduced ? undefined : { scale: isActive ? 1.12 : 1 }}
+                transition={{ type: "spring", stiffness: 320, damping: 18 }}
+                className={`flex size-11 items-center justify-center rounded-2xl border bg-background transition-colors duration-500 ${
+                  isActive
+                    ? "border-primary/70 text-primary"
+                    : "border-border/15 text-muted"
+                }`}
+              >
+                <Icon className="size-[18px]" />
+              </motion.div>
+
+              <span
+                className={`absolute left-1/2 -translate-x-1/2 whitespace-nowrap text-center text-[11px] font-medium transition-colors duration-500 ${
+                  labelAbove ? "bottom-full mb-2" : "top-full mt-2"
+                } ${isActive ? "text-foreground" : "text-muted/60"}`}
+              >
+                {n.label}
+              </span>
+            </div>
           </div>
         );
       })}

@@ -53,7 +53,7 @@ export function Navbar() {
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-border bg-background/80 backdrop-blur-xl">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-border/10 bg-background/80 backdrop-blur-xl">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 md:px-8"
         aria-label="Primary navigation"
@@ -96,7 +96,7 @@ export function Navbar() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -4 }}
                         transition={{ duration: 0.15 }}
-                        className="absolute left-0 top-full mt-2 w-[580px] rounded-2xl border border-border bg-surface p-6 shadow-xl"
+                        className="absolute left-0 top-full mt-2 w-[580px] rounded-2xl border border-border/15 bg-surface p-6 shadow-xl"
                         onMouseEnter={handleMouseEnter}
                         onMouseLeave={handleMouseLeave}
                       >
@@ -118,7 +118,7 @@ export function Navbar() {
                                 </li>
                               ))}
                             </ul>
-                            <div className="mt-3 border-t border-border pt-3">
+                            <div className="mt-3 border-t border-border/10 pt-3">
                               <Link
                                 href="/ai-employees"
                                 onClick={() => setDropdownOpen(false)}
@@ -234,7 +234,7 @@ export function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2 }}
-            className="overflow-hidden border-t border-border md:hidden"
+            className="overflow-hidden border-t border-border/10 md:hidden"
           >
             <div className="flex flex-col gap-6 px-4 py-6">
               {siteConfig.navLinks.map((link) => {

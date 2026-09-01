@@ -8,7 +8,7 @@ interface AgentUseCasesProps {
 
 export function AgentUseCases({ agent }: AgentUseCasesProps) {
   return (
-    <section className="border-y border-border px-4 py-24 md:px-8">
+    <section className="border-y border-border/10 px-4 py-20 md:px-8 md:py-28">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 max-w-2xl">
           <SectionHeading
@@ -21,7 +21,7 @@ export function AgentUseCases({ agent }: AgentUseCasesProps) {
           {agent.useCases.map((scenario, i) => (
             <div
               key={i}
-              className="rounded-2xl border border-border bg-surface/60 p-6"
+              className="rounded-2xl border border-border/15 bg-surface/60 p-6"
             >
               <div className="mb-3 flex items-center gap-2">
                 <Sparkles className="size-4 text-primary" />

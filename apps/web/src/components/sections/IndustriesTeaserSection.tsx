@@ -22,7 +22,7 @@ const industries = [
 
 export function IndustriesTeaserSection() {
   return (
-    <section className="px-4 py-24 md:px-8">
+    <section className="px-4 py-20 md:px-8 md:py-28">
       <div className="mx-auto max-w-7xl">
         <RevealOnScroll>
           <div className="mb-12 max-w-2xl">
@@ -42,7 +42,7 @@ export function IndustriesTeaserSection() {
             const Icon = ind.icon;
             return (
               <RevealOnScroll key={ind.label} delay={i * 0.05}>
-                <div className="flex items-center gap-3 rounded-2xl border border-border bg-surface/60 px-5 py-3">
+                <div className="flex items-center gap-3 rounded-2xl border border-border/15 bg-surface/60 px-5 py-3">
                   <IconBox color="surface">
                     <Icon className="size-4" />
                   </IconBox>

@@ -41,6 +41,8 @@ export function FAQSection() {
     <Section tone="tinted">
       <Reveal>
         <SectionHeading
+          align="center"
+          className="max-w-3xl"
           eyebrow="Before you ask"
           title="Frequently asked"
           accent="questions."

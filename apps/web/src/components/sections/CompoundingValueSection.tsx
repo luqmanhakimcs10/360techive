@@ -10,31 +10,42 @@ import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
  * The "start now" argument: an agent system accumulates rather than
  * depreciating. Each stage shows more of the bar row filled — the visual
  * carries the point without a chart.
+ *
+ * The story is told by the COUNT of filled bars, never by their height. Every
+ * bar — filled or empty, in every card — is the same width, height, gap and
+ * radius, so the four mini-charts read as one instrument with four readings.
  */
-const stages = [
+const BAR_COUNT = 6;
+const stages: {
+  when: string;
+  title: string;
+  body: string;
+  /** How many of the BAR_COUNT slots are filled at this stage. */
+  filled: number;
+}[] = [
   {
     when: "Month 1",
     title: "First agent live",
     body: "The use case that pays for itself fastest. The knowledge base starts here.",
-    bars: [80, 0, 0, 0, 0, 0],
+    filled: 1,
   },
   {
     when: "Month 3",
     title: "Two more join",
     body: "Each new agent inherits what the first one already learned about your business.",
-    bars: [80, 64, 48, 0, 0, 0],
+    filled: 3,
   },
   {
     when: "Month 6",
     title: "Departments connect",
     body: "Agents hand work to each other. The knowledge base is now the asset.",
-    bars: [80, 70, 60, 50, 38, 0],
+    filled: 5,
   },
   {
     when: "Year 1+",
     title: "Compounding",
     body: "A structure a competitor starting today still has twelve months of work to reach.",
-    bars: [80, 74, 68, 62, 56, 48],
+    filled: 6,
   },
 ];
 
@@ -71,15 +82,16 @@ export function CompoundingValueSection() {
               <Eyebrow tone="primary">{stage.when}</Eyebrow>
 
               <div
-                className="flex h-16 items-end gap-1.5"
-                aria-hidden="true"
+                className="flex h-16 items-stretch gap-1.5"
+                role="img"
+                aria-label={`${stage.filled} of ${BAR_COUNT} departments covered`}
               >
-                {stage.bars.map((h, i) =>
-                  h ? (
+                {Array.from({ length: BAR_COUNT }, (_, i) =>
+                  i < stage.filled ? (
                     <motion.span
                       key={i}
                       className="flex-1 rounded-[3px] bg-primary"
-                      style={{ height: `${h}%`, transformOrigin: "bottom" }}
+                      style={{ transformOrigin: "bottom" }}
                       initial={reduced ? { scaleY: 1 } : { scaleY: 0 }}
                       whileInView={{ scaleY: 1 }}
                       viewport={{ once: true, margin: "-64px" }}
@@ -97,11 +109,11 @@ export function CompoundingValueSection() {
                       }
                     />
                   ) : (
-                    // empty slots stay put — they're the track the bars grow into
+                    // an empty slot is a full-height placeholder bar, not a
+                    // baseline tick — it reads as "a department not covered yet"
                     <span
                       key={i}
-                      className="flex-1 rounded-[3px] bg-foreground/[0.08]"
-                      style={{ height: "6%" }}
+                      className="flex-1 rounded-[3px] border border-foreground/10 bg-foreground/[0.04]"
                     />
                   )
                 )}
