@@ -13,8 +13,7 @@ export const siteConfig = {
   name: "360 Techive",
   tagline:
     "We build custom software, digital products and intelligent systems.",
-  /** TODO: replace with the real inbox before launch. */
-  contactEmail: "hello@360techive.com",
+  contactEmail: "360techive@gmail.com",
   navLinks: [
     { label: "Services", href: "/#services" },
     { label: "AI Automation", href: "/ai-automation" },
