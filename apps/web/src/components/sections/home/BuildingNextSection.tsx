@@ -49,7 +49,7 @@ export function BuildingNextSection() {
   const active = labAreas[activeIndex];
 
   return (
-    <Section id="lab">
+    <Section id="lab" glow="left" glowStrength="medium">
       <div ref={ref} className="flex flex-col gap-10">
         <div className="flex flex-col gap-4">
           <Eyebrow>The lab</Eyebrow>
@@ -76,7 +76,7 @@ export function BuildingNextSection() {
                     onMouseLeave={() => setPinned(null)}
                     onFocus={() => setPinned(i)}
                     onBlur={() => setPinned(null)}
-                    className="group relative block text-left focus-visible:outline-none"
+                    className="group relative block text-left transition-transform duration-300 ease-out hover:-translate-y-0.5 focus-visible:outline-none motion-reduce:transform-none"
                   >
                     <motion.span
                       animate={{

@@ -29,7 +29,7 @@ export function CustomSolutionsSection() {
   const active = capabilities[activeIndex];
 
   return (
-    <Section id="services" tone="tinted">
+    <Section id="services" tone="tinted" glow="top-left" glowStrength="medium">
       <div className="flex flex-col gap-4">
         <Eyebrow>Custom solutions</Eyebrow>
         <h2 className="max-w-3xl text-balance text-3xl font-semibold leading-[1.1] tracking-tight text-foreground md:text-[2.7rem]">
@@ -62,14 +62,14 @@ export function CustomSolutionsSection() {
                   onFocus={() => setActiveIndex(i)}
                   onClick={() => setActiveIndex(i)}
                   aria-pressed={isActive}
-                  className="group relative w-full border-t border-border/10 py-6 text-left last:border-b focus-visible:outline-none"
+                  className="group relative w-full border-t border-border/10 px-3 py-6 text-left transition-colors duration-300 last:border-b hover:bg-foreground/[0.03] focus-visible:outline-none focus-visible:bg-foreground/[0.03] md:px-4"
                 >
                   {/* the accent rail that grows in from the left edge */}
                   <motion.span
                     aria-hidden="true"
                     animate={{ scaleY: isActive ? 1 : 0 }}
                     transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                    className="absolute -left-4 top-0 h-full w-[2px] origin-center bg-primary md:-left-6"
+                    className="absolute left-0 top-0 h-full w-[2px] origin-center bg-primary"
                   />
 
                   <div className="flex items-baseline gap-4">
@@ -83,9 +83,11 @@ export function CustomSolutionsSection() {
 
                     <div className="flex-1">
                       <h3
-                        className={`text-xl font-semibold tracking-tight transition-colors duration-200 md:text-2xl ${
-                          isActive ? "text-foreground" : "text-foreground/70"
-                        }`}
+                        className={`text-xl font-semibold tracking-tight transition-all duration-300 md:text-2xl ${
+                          isActive
+                            ? "translate-x-1 text-foreground"
+                            : "text-foreground/70"
+                        } motion-reduce:transform-none`}
                       >
                         {c.name}
                       </h3>

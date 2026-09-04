@@ -30,7 +30,7 @@ const statusCopy: Record<ProductStatus, string> = {
 
 export function ProductsSection() {
   return (
-    <Section id="products" tone="tinted">
+    <Section id="products" tone="tinted" glow="top-right" glowStrength="medium">
       <div className="flex flex-col gap-4">
         <Eyebrow>Our products</Eyebrow>
         <h2 className="max-w-3xl text-balance text-3xl font-semibold leading-[1.1] tracking-tight text-foreground md:text-[2.7rem]">
@@ -78,8 +78,20 @@ function ProductRow({ product, index }: { product: Product; index: number }) {
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         className={`relative ${flipped ? "md:order-2" : ""}`}
       >
+        {/* ambient bloom, behind the frame rather than on it */}
+        <motion.span
+          aria-hidden="true"
+          variants={{ rest: { opacity: 0, scale: 0.9 }, hover: { opacity: 1, scale: 1 } }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="pointer-events-none absolute -inset-3 -z-10 rounded-[40px] md:-inset-8"
+          style={{
+            background:
+              "radial-gradient(circle at 50% 50%, rgb(var(--color-primary) / 0.22), transparent 70%)",
+          }}
+        />
+
         <Reveal>
-          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-border/10 bg-surface/50 p-3 md:p-4">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-border/10 bg-surface/50 p-3 transition-colors duration-500 group-hover:border-primary/25 md:p-4">
             {/* the preview itself lifts a little further than its frame */}
             <motion.div
               variants={{ rest: { scale: 1 }, hover: { scale: 1.02 } }}
@@ -110,7 +122,7 @@ function ProductRow({ product, index }: { product: Product; index: number }) {
               <StatusDot status={product.status} />
             </div>
 
-            <h3 className="text-2xl font-semibold tracking-tight text-foreground md:text-[2rem]">
+            <h3 className="text-2xl font-semibold tracking-tight text-foreground transition-colors duration-300 group-hover:text-primary md:text-[2rem]">
               {product.name}
             </h3>
 
