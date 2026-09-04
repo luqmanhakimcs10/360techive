@@ -1,7 +1,10 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import {
+  motion,
+} from "framer-motion";
+import { useSafeReducedMotion } from "./useSafeReducedMotion";
 
 /**
  * The site's motion vocabulary. Three tiers, nothing else.
@@ -37,7 +40,7 @@ export function Reveal({
   delay = 0,
   className,
 }: RevealProps) {
-  const reduced = useReducedMotion();
+  const reduced = useSafeReducedMotion();
   const { y, duration } = tiers[tier];
 
   return (
@@ -67,7 +70,7 @@ export function RevealGroup({
   className?: string;
   stagger?: number;
 }) {
-  const reduced = useReducedMotion();
+  const reduced = useSafeReducedMotion();
 
   return (
     <motion.div
@@ -94,7 +97,7 @@ export function RevealItem({
   children: ReactNode;
   className?: string;
 }) {
-  const reduced = useReducedMotion();
+  const reduced = useSafeReducedMotion();
 
   return (
     <motion.div

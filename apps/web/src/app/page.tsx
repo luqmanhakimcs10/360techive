@@ -1,62 +1,52 @@
 import {
-  HeroSection,
-  TransformationSection,
-  AIEmployeeShowcaseSection,
-  CompoundingValueSection,
-  ImpactMetricsSection,
-  CostComparisonSection,
-  SavingsCalculatorSection,
-  CompanyBrainSection,
-  ModelGenerationsSection,
-  CapabilityCurveSection,
-  PositionQuoteSection,
-  HowItWorksSection,
-  FAQSection,
-  ContactCTASection,
-} from "@/components/sections";
+  HomeHero,
+  WhatWeDoSection,
+  CustomSolutionsSection,
+  AutomationSection,
+  ProductsSection,
+  BuildingNextSection,
+  SelectedWorkSection,
+  TechnologySection,
+  WhyUsSection,
+  AboutSection,
+  StartProjectSection,
+} from "@/components/sections/home";
 
 /**
- * The homepage is one continuous argument. Each section answers the
- * objection raised by the one before it:
+ * The homepage answers six questions in order, and stops.
  *
- *   1.  the shift on offer                  (hero)
- *   2.  your day, before and after          (transformation)
- *   3.  who does the work                   (the six agents)
- *   4.  "why not wait?"                     (compounding value)
- *   5.  "does it actually move numbers?"    (impact metrics)
- *   6.  "why not just hire someone?"        (cost comparison)
- *   7.  "what about MY numbers?"            (savings calculator)
- *   8.  "isn't this just chatbots?"         (company brain)
- *   9.  "won't it be obsolete in a year?"   (model generations)
- *   10. "says who?"                         (METR capability curve)
- *   11. the thesis, in one line             (position quote)
- *   12. how we get there                    (process)
- *   13. everything else                     (FAQ)
- *   14. the ask                             (CTA)
+ *   1.  who are you                     (hero)
+ *   2.  how do you work                 (idea to something people use)
+ *   3.  what can you build for me       (custom solutions)
+ *   4.  what about AI                   (automation, then out to its own page)
+ *   5.  do you build anything yourself  (products)
+ *   6.  what are you working on now     (the lab)
+ *   7.  has this worked before          (selected work)
+ *   8.  what do you build it with       (technology)
+ *   9.  why you                         (how we work)
+ *   10. who are you, really             (about)
+ *   11. the ask                         (start a project)
  *
- * Section tone alternates plain → tinted down the page; see ui/Section.tsx.
+ * Tone alternates plain and tinted down the page, and the closing section
+ * breaks the rhythm deliberately. All copy and data live in
+ * config/company.ts so this file stays a running order.
  *
- * Industries / Services / Testimonials teasers are intentionally NOT here —
- * they interrupt the argument. They still exist as components and belong on
- * their own pages until there is real proof material to put in them.
+ * The AI story that used to be this page now lives at /ai-automation in full.
  */
 export default function HomePage() {
   return (
     <>
-      <HeroSection />
-      <TransformationSection />
-      <AIEmployeeShowcaseSection />
-      <CompoundingValueSection />
-      <ImpactMetricsSection />
-      <CostComparisonSection />
-      <SavingsCalculatorSection />
-      <CompanyBrainSection />
-      <ModelGenerationsSection />
-      <CapabilityCurveSection />
-      <PositionQuoteSection />
-      <HowItWorksSection />
-      <FAQSection />
-      <ContactCTASection />
+      <HomeHero />
+      <WhatWeDoSection />
+      <CustomSolutionsSection />
+      <AutomationSection />
+      <ProductsSection />
+      <BuildingNextSection />
+      <SelectedWorkSection />
+      <TechnologySection />
+      <WhyUsSection />
+      <AboutSection />
+      <StartProjectSection />
     </>
   );
 }

@@ -18,8 +18,12 @@ const fraunces = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: "360 Techive",
-  description: "We build AI Employees for every department.",
+  title: {
+    default: "360 Techive | Software, digital products and intelligent systems",
+    template: "%s",
+  },
+  description:
+    "We design and build custom web and mobile applications, interfaces, AI agents, automation and our own digital products.",
 };
 
 export default function RootLayout({
