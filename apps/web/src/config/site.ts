@@ -3,35 +3,43 @@ export interface NavLink {
   href: string;
 }
 
+/**
+ * Navigation is deliberately short. Products, Work and About are sections of
+ * the homepage rather than separate routes for now, so they are anchor links.
+ * When any of them grows into its own page, change the href here and nothing
+ * else needs to move.
+ */
 export const siteConfig = {
   name: "360 Techive",
-  tagline: "We build AI Employees for every department.",
+  tagline:
+    "We build custom software, digital products and intelligent systems.",
+  /** TODO: replace with the real inbox before launch. */
+  contactEmail: "hello@360techive.com",
   navLinks: [
-    { label: "Agents", href: "/agents" },
-    { label: "Services", href: "/services" },
-    { label: "Industries", href: "/industries" },
-    { label: "How It Works", href: "/how-it-works" },
-    { label: "Pricing", href: "/pricing" },
-    { label: "About", href: "/about" },
+    { label: "Services", href: "/#services" },
+    { label: "AI Automation", href: "/ai-automation" },
+    { label: "Products", href: "/#products" },
+    { label: "Work", href: "/#work" },
+    { label: "About", href: "/#about" },
     { label: "Contact", href: "/contact" },
   ] satisfies NavLink[],
   footerLinks: {
+    company: [
+      { label: "What we do", href: "/#what-we-do" },
+      { label: "Custom solutions", href: "/#services" },
+      { label: "Our products", href: "/#products" },
+      { label: "Selected work", href: "/#work" },
+      { label: "About", href: "/#about" },
+      { label: "Contact", href: "/contact" },
+    ],
     product: [
-      { label: "All Agents", href: "/ai-employees" },
+      { label: "AI Automation", href: "/ai-automation" },
+      { label: "All AI Employees", href: "/ai-employees" },
       { label: "Support", href: "/ai-employees/support" },
       { label: "Sales", href: "/ai-employees/sales" },
       { label: "Finance", href: "/ai-employees/finance" },
       { label: "Research", href: "/ai-employees/research" },
       { label: "Documents", href: "/ai-employees/document" },
-      { label: "Executive Assistant", href: "/ai-employees/executive-assistant" },
-    ],
-    company: [
-      { label: "Services", href: "/services" },
-      { label: "Industries", href: "/industries" },
-      { label: "How It Works", href: "/how-it-works" },
-      { label: "Pricing", href: "/pricing" },
-      { label: "About", href: "/about" },
-      { label: "Contact", href: "/contact" },
     ],
     legal: [
       { label: "Privacy", href: "/privacy" },

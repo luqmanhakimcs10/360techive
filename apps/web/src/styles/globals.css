@@ -39,6 +39,17 @@
   }
 }
 
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Anchored sections must clear the fixed navbar. */
+  [id] {
+    scroll-margin-top: 6rem;
+  }
+}
+
 @layer components {
   .glass-panel {
     @apply border border-border/10 bg-surface/60 backdrop-blur-xl;
@@ -73,6 +84,10 @@ input[type="range"]::-moz-range-thumb {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   *,
   *::before,
   *::after {
