@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { siteConfig } from "@/config/site";
+import { Logo } from "../ui/Logo";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -11,9 +12,10 @@ export function Footer() {
           <div className="md:col-span-1">
             <Link
               href="/"
-              className="text-lg font-semibold tracking-tight text-foreground"
+              aria-label={`${siteConfig.name}, home`}
+              className="inline-flex transition-opacity duration-200 hover:opacity-80"
             >
-              {siteConfig.name}
+              <Logo height={42} />
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-muted">
               {siteConfig.tagline}

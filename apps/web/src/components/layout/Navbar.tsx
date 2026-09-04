@@ -11,6 +11,7 @@ import {
 } from "framer-motion";
 import { Button } from "../ui/Button";
 import { ThemeToggle } from "../ui/ThemeToggle";
+import { Logo } from "../ui/Logo";
 import { siteConfig } from "@/config/site";
 import { useSafeReducedMotion } from "@/components/ui/useSafeReducedMotion";
 
@@ -61,10 +62,10 @@ export function Navbar() {
       >
         <Link
           href="/"
-          className="group flex items-center gap-2 text-lg font-semibold tracking-tight text-foreground"
+          aria-label={`${siteConfig.name}, home`}
+          className="flex items-center transition-opacity duration-200 hover:opacity-80"
         >
-          <span className="size-1.5 rounded-full bg-primary transition-transform duration-300 group-hover:scale-150 motion-reduce:transform-none" />
-          {siteConfig.name}
+          <Logo height={38} />
         </Link>
 
         {/* Desktop */}

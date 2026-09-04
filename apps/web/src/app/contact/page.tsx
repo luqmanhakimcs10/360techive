@@ -7,7 +7,7 @@ import { Accordion } from "@/components/ui/Accordion";
 import { ContactForm } from "@/components/sections/contact/ContactForm";
 import { siteConfig } from "@/config/site";
 import {
-  enquiryRoutes,
+  engagements,
   conversationSteps,
   contactFaqs,
   contactNotes,
@@ -16,15 +16,16 @@ import {
 export const metadata: Metadata = {
   title: "Contact | 360 Techive",
   description:
-    "Tell us what you are trying to build. We work with brands, founders and teams on custom software, digital products and automation.",
+    "Commission custom software, digital products and automation. Tell us what you are building and we will tell you what it takes.",
 };
 
 /**
- * The contact page is a sales conversation, so it answers the objections a
- * brand has before writing to an agency it does not know yet: who reads this,
- * what happens next, can you work with our team, who owns the code, what
- * about our NDA. The form stays at the top because that is the point of the
- * page; everything under it exists to make sending it feel low risk.
+ * The contact page is a sales conversation with a senior reader, so it
+ * answers the questions that decide whether an enquiry gets written at all:
+ * who reads this, what happens next, can you work with our team, who owns the
+ * code, how is confidentiality handled. The form stays at the top because
+ * that is the point of the page. Everything beneath it exists to make sending
+ * it feel like a considered decision rather than a risk.
  */
 export default function ContactPage() {
   return (
@@ -45,17 +46,17 @@ export default function ContactPage() {
 
             <Reveal tier="quiet" delay={0.12}>
               <p className="max-w-md text-pretty text-base leading-relaxed text-muted md:text-lg">
-                We work with brands that have outgrown their current systems,
-                teams that need a product built properly, and founders with an
-                idea and no software yet. Whichever one you are, start with the
-                problem and we will take it from there.
+                We work with established brands, leadership teams and founders
+                who need software built to a standard their name can sit behind.
+                Begin with the problem rather than the specification, and we will
+                tell you what it actually takes.
               </p>
             </Reveal>
 
             <Reveal tier="quiet" delay={0.18}>
               <div className="flex flex-col gap-2 pt-2">
                 <span className="text-[11px] uppercase tracking-[0.15em] text-muted">
-                  Prefer email
+                  Email
                 </span>
                 <a
                   href={`mailto:${siteConfig.contactEmail}`}
@@ -99,22 +100,22 @@ export default function ContactPage() {
         </div>
       </Section>
 
-      {/* Three doors, so an agency enquiry does not arrive looking like a brief */}
+      {/* The three places client work begins, each arriving already labelled */}
       <Section tone="tinted">
         <div className="flex flex-col gap-3">
-          <Eyebrow>Who is writing</Eyebrow>
+          <Eyebrow>Where work begins</Eyebrow>
           <h2 className="max-w-2xl text-balance text-2xl font-semibold leading-[1.15] tracking-tight text-foreground md:text-[2.1rem]">
             <LineReveal>
-              Not every message is a{" "}
+              Most engagements start in one of{" "}
               <span className="font-serif font-normal italic text-primary">
-                brief.
+                three places.
               </span>
             </LineReveal>
           </h2>
           <Reveal tier="quiet" delay={0.08}>
             <p className="max-w-2xl text-pretty text-base leading-relaxed text-muted">
-              Use whichever of these fits and your message reaches the right
-              conversation, already labelled.
+              Tell us which one describes your situation and the conversation
+              starts on the right footing.
             </p>
           </Reveal>
         </div>
@@ -123,7 +124,7 @@ export default function ContactPage() {
           className="mt-10 grid gap-px overflow-hidden rounded-2xl border border-border/10 bg-border/10 md:grid-cols-3"
           stagger={0.07}
         >
-          {enquiryRoutes.map((route) => (
+          {engagements.map((route) => (
             <RevealItem key={route.label} className="bg-background">
               <a
                 href={`mailto:${siteConfig.contactEmail}?subject=${encodeURIComponent(
@@ -142,7 +143,7 @@ export default function ContactPage() {
                 </span>
 
                 <span className="mt-auto flex items-center gap-2 pt-4 text-sm font-medium text-primary">
-                  Write to us
+                  Start here
                   <span
                     aria-hidden="true"
                     className="transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none"
@@ -160,7 +161,7 @@ export default function ContactPage() {
       <Section>
         <div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-20">
           <div className="lg:sticky lg:top-32 lg:self-start">
-            <Eyebrow>After you send it</Eyebrow>
+            <Eyebrow>What follows</Eyebrow>
             <h2 className="mt-4 text-balance text-2xl font-semibold leading-[1.15] tracking-tight text-foreground md:text-[2.1rem]">
               <LineReveal>How the first</LineReveal>
               <LineReveal delay={0.08}>
@@ -172,8 +173,8 @@ export default function ContactPage() {
             </h2>
             <Reveal tier="quiet" delay={0.12}>
               <p className="mt-5 max-w-sm text-pretty text-base leading-relaxed text-muted">
-                No pitch deck, no discovery workshop you have to pay for before
-                anyone tells you anything useful.
+                No pitch deck, and no paid discovery exercise before anyone tells
+                you anything useful.
               </p>
             </Reveal>
           </div>
@@ -216,8 +217,8 @@ export default function ContactPage() {
             </h2>
             <Reveal tier="quiet" delay={0.12}>
               <p className="mt-5 max-w-sm text-pretty text-base leading-relaxed text-muted">
-                If yours is not here, put it in the form. We would rather answer
-                it now than halfway through a project.
+                If yours is not here, ask it in the form. We would far rather
+                answer it now than halfway through a project.
               </p>
             </Reveal>
           </div>

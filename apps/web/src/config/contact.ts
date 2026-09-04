@@ -2,15 +2,19 @@
  * Contact page content.
  *
  * Kept out of the component so the copy can be edited without touching
- * layout, and so a real address, phone number or office can be added later in
- * one place. Nothing here claims a fact the company cannot stand behind:
- * no invented locations, no response time we would struggle to keep, no
- * client names.
+ * layout, and so a real address or phone number can be added later in one
+ * place. Nothing here claims a fact the company cannot stand behind: no
+ * invented office, no response time we would struggle to keep, no client
+ * names, no numbers.
+ *
+ * Tone: written for people who commission serious work. Assured and precise,
+ * never loud. The reader is assumed to be senior, short of time, and able to
+ * tell the difference between confidence and noise.
  *
  * Copy rule for this file: plain sentences, no dashes of any kind.
  */
 
-export interface EnquiryRoute {
+export interface Engagement {
   label: string;
   description: string;
   /** Prefills the mail subject so enquiries arrive already sorted. */
@@ -18,28 +22,27 @@ export interface EnquiryRoute {
 }
 
 /**
- * Three doors instead of one inbox. A brand asking about a rebuild and an
- * agency asking about overflow capacity are different conversations, and
- * routing them at the front saves a round of email working out which is which.
+ * We build for clients. That is the whole business, so these are the three
+ * places client work begins rather than a menu of relationships.
  */
-export const enquiryRoutes: EnquiryRoute[] = [
+export const engagements: Engagement[] = [
   {
-    label: "New project",
+    label: "A new product",
     description:
-      "You have something to build, something to replace, or a process that has stopped keeping up.",
-    subject: "New project enquiry",
+      "An idea, a market you understand, and nothing built yet. We shape it into something specific enough to build and small enough to launch.",
+    subject: "New product enquiry",
   },
   {
-    label: "Agencies and partners",
+    label: "A rebuild",
     description:
-      "You need a build team behind your brand, design or marketing work. We are comfortable working quietly under yours.",
-    subject: "Partnership enquiry",
+      "Software that carried you this far and now holds you back. We assess what exists, then replace it without stopping the business that depends on it.",
+    subject: "Rebuild enquiry",
   },
   {
-    label: "Working with us",
+    label: "Continuing work",
     description:
-      "You design or build things well and want to work together. Send us something you made rather than a template.",
-    subject: "Working with 360 Techive",
+      "A product already live that needs a team to keep building it properly, at a standard your name can sit behind.",
+    subject: "Continuing work enquiry",
   },
 ];
 
@@ -47,63 +50,63 @@ export const enquiryRoutes: EnquiryRoute[] = [
 export const conversationSteps = [
   {
     step: "01",
-    title: "A person reads it",
-    body: "Not an autoresponder and not a sales sequence. Whoever replies will have read what you wrote.",
+    title: "Someone senior reads it",
+    body: "Your enquiry goes to the people who would do the work. There is no qualification call and no account manager between you and an answer.",
   },
   {
     step: "02",
-    title: "We ask about the work, not the wishlist",
-    body: "How the job gets done today, who it slows down and what happens when it goes wrong. That is usually where the real requirement is hiding.",
+    title: "We ask about the business, not the feature list",
+    body: "How the work is done today, who it slows down, what it costs when it goes wrong. The requirement worth building is almost always underneath the one you were given.",
   },
   {
     step: "03",
-    title: "You get our honest read",
-    body: "What we think it takes, where the risk sits and what we would build first. Including when the answer is that you need less than you think.",
+    title: "You get a considered view",
+    body: "What we believe it takes, where the risk sits, what we would build first and what we would leave until later. Including when the honest answer is that you need less than you were told.",
   },
   {
     step: "04",
-    title: "Then a proposal, if it fits",
-    body: "Scope, sequence and cost in writing, with the assumptions spelled out so there is nothing to discover halfway through.",
+    title: "Then a proposal, if we are the right firm",
+    body: "Scope, sequence and cost set out in writing, with the assumptions stated plainly so nothing is discovered halfway through.",
   },
 ];
 
-/** Answers to the questions brands actually ask before the first call. */
+/** The questions that decide whether an enquiry gets written at all. */
 export const contactFaqs = [
   {
-    label: "We already have a team. Can you work alongside them?",
+    label: "We have our own team. Can you work alongside them?",
     content:
-      "Yes, and often that is the better arrangement. We can take one product, one platform or one piece of the stack while your team keeps the rest, and we work to whatever review and release process you already run.",
+      "Yes, and it is often the better arrangement. We can take one product, one platform or one part of the system while your team holds the rest, working to the review and release process you already run rather than imposing ours.",
   },
   {
-    label: "Can you take over software somebody else built?",
+    label: "Can you take on software somebody else built?",
     content:
-      "Frequently. We start by reading the code and mapping what is there, then tell you honestly whether it is worth continuing or worth replacing. We would rather say the unpopular thing early than bill you for both.",
+      "Regularly. We read the codebase and map what is actually there before recommending anything, then tell you plainly whether it is worth continuing or worth replacing. We would rather lose the larger piece of work than bill you for both.",
   },
   {
-    label: "How do you handle confidential information?",
+    label: "Who owns the code and the intellectual property?",
     content:
-      "We will sign your NDA before the first detailed conversation, or send ours if you prefer. Nothing you share with us is used as a reference or a case study without your written approval.",
+      "You do, in full, from the first commit. You receive the repositories, the infrastructure and the documentation, and you are free to take the work to another team at any point. Nothing is held back as leverage.",
   },
   {
-    label: "Do you need a finished brief to start?",
+    label: "How is confidentiality handled?",
     content:
-      "No. A brief helps, but a clear description of the problem is worth more than a specification written around a solution nobody has tested. If you have neither, the first conversation is where we work it out.",
+      "We will sign your agreement before the first detailed conversation, or provide ours if that is simpler. Your work is never shown, referenced or published as a case study without your written approval.",
+  },
+  {
+    label: "Do we need a finished brief before approaching you?",
+    content:
+      "No. A brief is useful, but a clear account of the problem is worth more than a specification written around a solution nobody has tested yet. If you have neither, that is precisely what the first conversation is for.",
   },
   {
     label: "How is work priced and scheduled?",
     content:
-      "Defined pieces of work are quoted as fixed scope. Ongoing product work runs monthly, with an agreed team and a plan you can change each cycle. Either way you see the numbers and the sequence before anything is signed.",
-  },
-  {
-    label: "Do you take on small projects?",
-    content:
-      "Yes, if the problem is worth solving. Some of the work we are proudest of started as one screen or one automation that removed a recurring headache.",
+      "Defined pieces of work are quoted as fixed scope. Continuing product work runs on a monthly basis with an agreed team and a plan you can redirect each cycle. Either way, the numbers and the sequence are agreed before anything begins.",
   },
 ];
 
-/** Shown next to the form. Practical, and all of it true today. */
+/** Shown beside the form. Practical, and all of it true today. */
 export const contactNotes = [
-  "We reply to every enquiry, including the ones we are not right for.",
-  "Your details stay with us and are never passed to anyone else.",
-  "Written in English. We are happy to keep the whole project in writing.",
+  "Every enquiry is answered, including the ones we are not the right firm for.",
+  "You will speak with the people who would build it, not an account manager.",
+  "What you share stays with us and is never published without your approval.",
 ];
