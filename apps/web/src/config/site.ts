@@ -24,21 +24,17 @@ export const siteConfig = {
   ] satisfies NavLink[],
   footerLinks: {
     company: [
-      { label: "What we do", href: "/#what-we-do" },
       { label: "Custom solutions", href: "/#services" },
       { label: "Our products", href: "/#products" },
       { label: "Selected work", href: "/#work" },
       { label: "About", href: "/#about" },
       { label: "Contact", href: "/contact" },
     ],
-    product: [
+    explore: [
       { label: "AI Automation", href: "/ai-automation" },
-      { label: "All AI Employees", href: "/ai-employees" },
-      { label: "Support", href: "/ai-employees/support" },
-      { label: "Sales", href: "/ai-employees/sales" },
-      { label: "Finance", href: "/ai-employees/finance" },
-      { label: "Research", href: "/ai-employees/research" },
-      { label: "Documents", href: "/ai-employees/document" },
+      { label: "AI Employees", href: "/ai-employees" },
+      { label: "How it works", href: "/how-it-works" },
+      { label: "Pricing", href: "/pricing" },
     ],
     legal: [
       { label: "Privacy", href: "/privacy" },
