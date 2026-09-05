@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 
 /**
- * Large project preview: a browser plane carrying a real interface mockup,
- * with a supporting photograph on a second, overlapping surface — the same
- * pairing the product panels use (interface + real photo), so a case study
- * reads as a working system rather than a placeholder.
+ * Large project preview: a browser plane carrying a real interface mockup.
+ * The supporting photography sits inside the interface where a real product
+ * would put it — a crew avatar on a job row, the assistant's avatar in a chat
+ * header, a thumbnail on an audit line — rather than on a floating card.
  *
  * Three compositions, cycled by index, so a new project always has a frame.
  * All data shown is invented sample content for the case study.
@@ -26,8 +26,40 @@ const status = {
 type Composition = {
   url: string;
   body: React.ReactNode;
-  photo: { src: string; alt: string; title: string; sub: string };
 };
+
+/**
+ * Supporting photography, sized for the place it sits inside a mockup:
+ * a crew avatar on a job row, the assistant's avatar in a chat header,
+ * a thumbnail on an audit line.
+ */
+function InlinePhoto({
+  src,
+  alt,
+  shape = "circle",
+  className = "",
+}: {
+  src: string;
+  alt: string;
+  shape?: "circle" | "square";
+  className?: string;
+}) {
+  return (
+    <span
+      className={`relative block shrink-0 overflow-hidden ring-1 ring-border/20 ${
+        shape === "circle" ? "rounded-full" : "rounded"
+      } ${className}`}
+    >
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes="48px"
+        className="object-cover dark:brightness-90"
+      />
+    </span>
+  );
+}
 
 export function ProjectFrame({ variant }: { variant: number }) {
   const v = variant % 3;
@@ -52,7 +84,7 @@ export function ProjectFrame({ variant }: { variant: number }) {
       <motion.div
         variants={{ rest: { y: 0 }, hover: { y: -8 } }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute inset-y-4 left-4 right-[23%] flex flex-col overflow-hidden rounded-xl border border-border/10 bg-background/90 shadow-[0_28px_60px_-40px_rgb(0_0_0/0.7)] backdrop-blur-sm sm:inset-y-5 sm:left-5 md:inset-y-7 md:left-8"
+        className="absolute inset-4 flex flex-col overflow-hidden rounded-xl border border-border/10 bg-background/90 shadow-[0_28px_60px_-40px_rgb(0_0_0/0.7)] backdrop-blur-sm sm:inset-5 md:inset-8"
       >
         <div className="flex items-center gap-1.5 border-b border-border/10 px-2.5 py-1.5 md:px-3 md:py-2">
           <span className="size-1.5 rounded-full bg-primary/60" />
@@ -63,35 +95,11 @@ export function ProjectFrame({ variant }: { variant: number }) {
           </span>
         </div>
 
-        <div className="flex min-h-0 flex-1 flex-col p-2 pr-[11%] sm:p-2.5 sm:pr-[10%] md:p-4 md:pr-[10%]">
+        <div className="flex min-h-0 flex-1 flex-col p-2 sm:p-2.5 md:p-4">
           {composition.body}
         </div>
       </motion.div>
 
-      {/* overlapping supporting photo */}
-      <motion.div
-        variants={{ rest: { y: 0, x: 0 }, hover: { y: -14, x: -6 } }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay: 0.04 }}
-        className="absolute bottom-6 right-4 w-[26%] overflow-hidden rounded-xl border border-border/10 bg-surface shadow-[0_20px_44px_-28px_rgb(0_0_0/0.75)] md:right-8"
-      >
-        <div className="relative aspect-[3/4] w-full">
-          <Image
-            src={composition.photo.src}
-            alt={composition.photo.alt}
-            fill
-            sizes="(max-width: 768px) 30vw, 200px"
-            className="object-cover dark:brightness-90"
-          />
-          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background/95 via-background/65 to-transparent p-1.5 md:p-2">
-            <span className="block truncate text-[7px] font-semibold text-foreground md:text-[9px]">
-              {composition.photo.title}
-            </span>
-            <span className="block truncate text-[6px] text-muted md:text-[8px]">
-              {composition.photo.sub}
-            </span>
-          </div>
-        </div>
-      </motion.div>
     </div>
   );
 }
@@ -160,6 +168,10 @@ function opsComposition(): Composition {
       date: "15 Mar",
       label: "In progress",
       tone: "blue" as const,
+      photo: {
+        src: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=200&q=80",
+        alt: "Service technician in a hard hat working on equipment on site",
+      },
     },
     {
       job: "Northgate Retail — Quarterly maintenance",
@@ -179,12 +191,6 @@ function opsComposition(): Composition {
 
   return {
     url: "fieldbase.app/jobs",
-    photo: {
-      src: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=600&q=80",
-      alt: "Service technician in a hard hat working on equipment on site",
-      title: "Crew on site",
-      sub: "Job updated from the van",
-    },
     body: (
       <div className="flex min-h-0 flex-1 flex-col gap-2 md:gap-3">
         <div className="flex items-center justify-between gap-2">
@@ -219,6 +225,17 @@ function opsComposition(): Composition {
                   i === 3 ? "hidden sm:flex" : "flex"
                 }`}
               >
+                {row.photo ? (
+                  <InlinePhoto
+                    src={row.photo.src}
+                    alt={row.photo.alt}
+                    className="size-4 md:size-6"
+                  />
+                ) : (
+                  <span className="flex size-4 shrink-0 items-center justify-center md:size-6">
+                    <span className="size-1 rounded-full bg-border/40" />
+                  </span>
+                )}
                 <span className="truncate text-[7px] font-medium text-foreground sm:text-[8px] md:text-[10px]">
                   {row.job}
                 </span>
@@ -243,17 +260,18 @@ function opsComposition(): Composition {
 function supportComposition(): Composition {
   return {
     url: "northline.supply/inbox",
-    photo: {
-      src: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=600&q=80",
-      alt: "Support team at a desk working through customer conversations on screen",
-      title: "Support desk",
-      sub: "Escalations arrive with history",
-    },
     body: (
       <div className="flex min-h-0 flex-1 flex-col gap-1.5 md:gap-2.5">
         <div className="flex items-center justify-between gap-2">
-          <span className="truncate text-[8px] font-semibold text-foreground sm:text-[9px] md:text-[12px]">
-            Support assistant
+          <span className="flex min-w-0 items-center gap-1.5 md:gap-2">
+            <InlinePhoto
+              src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=200&q=80"
+              alt="Support team at a desk working through customer conversations"
+              className="size-4 md:size-6"
+            />
+            <span className="truncate text-[8px] font-semibold text-foreground sm:text-[9px] md:text-[12px]">
+              Support assistant
+            </span>
           </span>
           <span className="hidden text-[8px] text-muted md:inline">
             68% resolved without a human today
@@ -278,7 +296,7 @@ function supportComposition(): Composition {
         </div>
 
         {/* conversation */}
-        <div className="flex min-h-0 flex-1 flex-col justify-end gap-1.5 md:gap-2">
+        <div className="flex min-h-0 flex-1 flex-col justify-end gap-1.5 md:justify-between md:gap-2">
           <div className="ml-auto hidden max-w-[72%] rounded-lg rounded-br-xs border border-border/10 bg-surface/70 px-2 py-1 text-[7px] leading-snug text-foreground/85 sm:block sm:text-[8px] md:px-2.5 md:py-1.5 md:text-[10px]">
             Do the wool socks run small?
           </div>
@@ -352,12 +370,6 @@ function approvalComposition(): Composition {
 
   return {
     url: "approvals.internal/requests",
-    photo: {
-      src: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=600&q=80",
-      alt: "Person reviewing printed documents and paperwork at a desk",
-      title: "Sign-off",
-      sub: "Every decision on the record",
-    },
     body: (
       <div className="flex min-h-0 flex-1 flex-col gap-2 md:gap-3">
         <div className="flex items-center justify-between gap-2">
@@ -392,19 +404,27 @@ function approvalComposition(): Composition {
         </div>
 
         {/* audit trail strip */}
-        <div className="rounded-md border border-border/10 bg-surface/40 px-2 py-1 md:px-2.5 md:py-1.5">
-          <div className="flex items-center gap-1.5 text-[6px] sm:text-[7px] md:text-[9px]">
-            <span className="text-muted">Submitted</span>
-            <span className="text-border/60">→</span>
-            <span className="text-muted">Reviewed</span>
-            <span className="text-border/60">→</span>
-            <span className="font-medium text-emerald-700 dark:text-emerald-300">
-              Approved
+        <div className="flex items-center gap-2 rounded-md border border-border/10 bg-surface/40 px-2 py-1 md:gap-2.5 md:px-2.5 md:py-1.5">
+          <InlinePhoto
+            src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=200&q=80"
+            alt="Person reviewing signed paperwork at a desk"
+            shape="square"
+            className="size-6 md:size-9"
+          />
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5 text-[6px] sm:text-[7px] md:text-[9px]">
+              <span className="text-muted">Submitted</span>
+              <span className="text-border/60">→</span>
+              <span className="text-muted">Reviewed</span>
+              <span className="text-border/60">→</span>
+              <span className="font-medium text-emerald-700 dark:text-emerald-300">
+                Approved
+              </span>
+            </div>
+            <span className="mt-0.5 block truncate text-[6px] text-muted sm:text-[6.5px] md:text-[8px]">
+              Approved 14:02 today by A. Karim · logged automatically
             </span>
           </div>
-          <span className="mt-0.5 block truncate text-[6px] text-muted sm:text-[6.5px] md:text-[8px]">
-            Approved 14:02 today by A. Karim · logged automatically
-          </span>
         </div>
       </div>
     ),
