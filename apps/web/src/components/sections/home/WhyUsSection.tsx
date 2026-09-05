@@ -15,7 +15,7 @@ import { principles } from "@/config/company";
  */
 export function WhyUsSection() {
   return (
-    <Section id="why-us">
+    <Section id="why-us" glow="top-right" glowStrength="medium">
       <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
         <div>
           <Eyebrow>Why us</Eyebrow>

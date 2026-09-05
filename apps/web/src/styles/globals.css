@@ -50,6 +50,18 @@
   }
 }
 
+@layer base {
+  /*
+   * The serif italic accent sits tight against the roman text that follows it
+   * ("likes building things"), because an italic's exit stroke leans into the
+   * next glyph. A hair of trailing space fixes the collision without being
+   * measurable as a gap.
+   */
+  .font-serif.italic {
+    padding-right: 0.045em;
+  }
+}
+
 @layer components {
   .glass-panel {
     @apply border border-border/10 bg-surface/60 backdrop-blur-xl;

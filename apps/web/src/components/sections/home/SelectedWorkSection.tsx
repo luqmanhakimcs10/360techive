@@ -23,7 +23,7 @@ import { useSafeReducedMotion } from "@/components/ui/useSafeReducedMotion";
  */
 export function SelectedWorkSection() {
   return (
-    <Section id="work">
+    <Section id="work" glow="bottom" glowStrength="soft">
       <div className="flex flex-col gap-4">
         <Eyebrow>Selected work</Eyebrow>
         <h2 className="max-w-3xl text-balance text-3xl font-semibold leading-[1.1] tracking-tight text-foreground md:text-[2.7rem]">
@@ -60,7 +60,7 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
       initial="rest"
       animate="rest"
       whileHover={reduced ? undefined : "hover"}
-      className="flex flex-col gap-8"
+      className="group flex flex-col gap-8"
     >
       <Reveal>
         <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-3 border-b border-border/10 pb-5">
@@ -68,7 +68,7 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
             <span className="text-[11px] font-medium tabular-nums text-primary">
               {String(index + 1).padStart(2, "0")}
             </span>
-            <h3 className="text-balance text-xl font-semibold tracking-tight text-foreground md:text-[1.7rem]">
+            <h3 className="text-balance text-xl font-semibold tracking-tight text-foreground transition-colors duration-300 group-hover:text-primary md:text-[1.7rem]">
               {project.title}
             </h3>
           </div>
@@ -80,7 +80,19 @@ function ProjectRow({ project, index }: { project: Project; index: number }) {
 
       <div className="grid gap-10 lg:grid-cols-[1.25fr_0.75fr] lg:gap-14">
         <Reveal delay={0.06}>
-          <ProjectFrame variant={index} />
+          <div className="relative">
+            <motion.span
+              aria-hidden="true"
+              variants={{ rest: { opacity: 0 }, hover: { opacity: 1 } }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="pointer-events-none absolute -inset-3 -z-10 rounded-[44px] md:-inset-8"
+              style={{
+                background:
+                  "radial-gradient(circle at 50% 50%, rgb(var(--color-primary) / 0.20), transparent 70%)",
+              }}
+            />
+            <ProjectFrame variant={index} />
+          </div>
         </Reveal>
 
         <Reveal delay={0.12}>

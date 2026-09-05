@@ -42,7 +42,7 @@ export function AutomationSection() {
   const flowing = inView && !reduced;
 
   return (
-    <Section id="ai-automation">
+    <Section id="ai-automation" glow="right" glowStrength="strong">
       <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
         <div className="flex flex-col gap-5 lg:pt-4">
           <Eyebrow tone="primary">AI automation</Eyebrow>

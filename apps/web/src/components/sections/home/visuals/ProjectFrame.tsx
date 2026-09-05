@@ -14,7 +14,7 @@ export function ProjectFrame({ variant }: { variant: number }) {
   const v = variant % 3;
 
   return (
-    <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-border/10 bg-surface/50">
+    <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-border/10 bg-surface/50 transition-colors duration-500 group-hover:border-primary/25">
       {/* faint grid ground */}
       <div
         aria-hidden="true"

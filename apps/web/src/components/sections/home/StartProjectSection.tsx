@@ -61,7 +61,7 @@ export function StartProjectSection() {
       <motion.div
         aria-hidden="true"
         style={reduced ? undefined : { opacity: glow }}
-        className="pointer-events-none absolute left-1/2 top-1/2 size-[620px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgb(var(--color-primary)/0.12),transparent_65%)]"
+        className="pointer-events-none absolute left-1/2 top-1/2 size-[820px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgb(var(--color-primary)/0.20),transparent_67%)]"
       />
 
       <div className="relative mx-auto flex max-w-4xl flex-col items-center text-center">

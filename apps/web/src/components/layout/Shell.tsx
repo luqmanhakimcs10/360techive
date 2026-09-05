@@ -10,7 +10,8 @@ export function Shell({ children }: ShellProps) {
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
-      <main className="flex-1 pt-16">{children}</main>
+      {/* clears the fixed header, which measures 73px at its tallest */}
+      <main className="flex-1 pt-20">{children}</main>
       <Footer />
     </div>
   );
