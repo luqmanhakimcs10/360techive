@@ -265,18 +265,30 @@ function WebDev() {
 
           {/* Mini mock webpage layout */}
           <div className="flex flex-1 flex-col gap-1.5">
-            <div className="h-10 w-full rounded-md bg-primary/15 border border-primary/20 p-2 flex flex-col justify-center">
-              <span className="h-1.5 w-16 rounded-full bg-primary/40" />
-              <span className="mt-1 h-1 w-24 rounded-full bg-foreground/20" />
+            <div className="flex h-10 w-full flex-col justify-center rounded-md border border-primary/20 bg-primary/15 p-2">
+              <span className="text-[8px] font-semibold leading-none text-foreground">
+                Live metrics, one screen
+              </span>
+              <span className="mt-1 text-[6.5px] leading-none text-muted">
+                Updated 4 seconds ago
+              </span>
             </div>
             <div className="grid grid-cols-2 gap-1.5">
               <div className="h-8 rounded-md border border-border/10 bg-surface/60 p-1.5">
-                <span className="block h-1 w-8 rounded-full bg-border/40" />
-                <span className="mt-1 block h-1.5 w-12 rounded-full bg-primary/30" />
+                <span className="block text-[6px] leading-none text-muted">
+                  Load time
+                </span>
+                <span className="mt-1 block text-[8.5px] font-semibold leading-none tabular-nums text-primary">
+                  0.9s
+                </span>
               </div>
               <div className="h-8 rounded-md border border-border/10 bg-surface/60 p-1.5">
-                <span className="block h-1 w-10 rounded-full bg-border/40" />
-                <span className="mt-1 block h-1.5 w-8 rounded-full bg-border/20" />
+                <span className="block text-[6px] leading-none text-muted">
+                  Lighthouse
+                </span>
+                <span className="mt-1 block text-[8.5px] font-semibold leading-none tabular-nums text-foreground">
+                  98 / 100
+                </span>
               </div>
             </div>
           </div>
@@ -309,11 +321,17 @@ function DesignPreview() {
               className="flex h-24 flex-1 flex-col justify-between rounded-lg border border-border/20 bg-surface/40 p-2"
             >
               <span className="text-[6px] font-mono text-muted/60 uppercase">Wireframe</span>
-              <div className="space-y-1">
-                <div className="h-1.5 w-3/4 rounded-full bg-border/30" />
-                <div className="h-1 w-1/2 rounded-full bg-border/20" />
+              <div className="leading-tight">
+                <span className="block text-[7.5px] font-medium text-foreground/70">
+                  Checkout · step 2
+                </span>
+                <span className="block text-[6px] text-muted">
+                  Delivery details
+                </span>
               </div>
-              <div className="h-6 w-full rounded border border-dashed border-border/30 bg-border/10" />
+              <div className="flex h-6 w-full items-center justify-center rounded border border-dashed border-border/30 bg-border/10 text-[6px] text-muted">
+                3 fields · button
+              </div>
             </motion.div>
 
             {/* Transition Arrow */}
@@ -327,12 +345,16 @@ function DesignPreview() {
               className="flex h-24 flex-1 flex-col justify-between rounded-lg border border-primary/30 bg-surface/80 p-2 shadow-xs"
             >
               <span className="text-[6px] font-mono text-primary uppercase font-semibold">Polished</span>
-              <div className="space-y-1">
-                <div className="h-1.5 w-3/4 rounded-full bg-foreground/70" />
-                <div className="h-1 w-1/2 rounded-full bg-primary/40" />
+              <div className="leading-tight">
+                <span className="block text-[7.5px] font-semibold text-foreground">
+                  Where should it go?
+                </span>
+                <span className="block text-[6px] text-primary">
+                  Free delivery over £50
+                </span>
               </div>
               <div className="flex h-6 w-full items-center justify-center rounded bg-primary text-[7px] font-medium text-white shadow-xs">
-                Action
+                Continue to payment
               </div>
             </motion.div>
           </div>

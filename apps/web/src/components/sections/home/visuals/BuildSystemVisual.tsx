@@ -322,14 +322,26 @@ function WebAppPanel({ still }: { still: boolean }) {
 
       {/* Dashboard bar chart */}
       <div className="flex gap-2 px-2.5 pb-2.5 pt-2">
-        <div className="flex w-1/4 flex-col gap-1.5">
-          {[0, 1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className={`h-1.5 rounded-full ${
-                i === 1 ? "bg-primary/50" : "bg-border/20"
+        <div className="flex w-1/4 flex-col justify-between py-0.5">
+          {[
+            { label: "Signups", active: false },
+            { label: "Revenue", active: true },
+            { label: "Churn", active: false },
+            { label: "Refunds", active: false },
+          ].map((row) => (
+            <span
+              key={row.label}
+              className={`flex items-center gap-1 text-[6px] leading-none ${
+                row.active ? "font-medium text-primary" : "text-muted"
               }`}
-            />
+            >
+              <span
+                className={`size-1 shrink-0 rounded-full ${
+                  row.active ? "bg-primary" : "bg-border/40"
+                }`}
+              />
+              {row.label}
+            </span>
           ))}
         </div>
         <div className="flex h-10 flex-1 items-end gap-1.5">

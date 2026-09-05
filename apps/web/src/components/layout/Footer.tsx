@@ -24,10 +24,10 @@ export function Footer() {
           <div className="grid grid-cols-2 gap-8 md:col-span-3 md:grid-cols-3">
             <div>
               <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-muted">
-                Product
+                Explore
               </h3>
               <ul className="space-y-3">
-                {siteConfig.footerLinks.product.map((link) => (
+                {siteConfig.footerLinks.explore.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}

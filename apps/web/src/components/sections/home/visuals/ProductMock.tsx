@@ -11,8 +11,6 @@ import Image from "next/image";
  * from Unsplash.
  */
 
-const line = "rounded-full bg-border/25";
-
 export function ProductMock({ mockId }: { mockId: string }) {
   switch (mockId) {
     case "wa-agent":
