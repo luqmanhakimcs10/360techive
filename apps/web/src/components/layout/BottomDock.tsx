@@ -5,14 +5,14 @@ import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { Home, Users, Globe, Mail } from "lucide-react";
 import { agents } from "@/config/agents";
-import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/Button";
 import { ThemeToggle } from "../ui/ThemeToggle";
+import { BrandLogo } from "@/components/ui/BrandLogo";
 
 function LogoMark() {
   return (
     <div className="fixed top-4 left-4 z-50 flex items-center gap-1.5 pointer-events-none" aria-label="360 Techive">
-      <span className="text-sm font-medium text-foreground/70">360 Techive</span>
+      <BrandLogo />
     </div>
   );
 }
