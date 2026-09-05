@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 /**
  * Large project preview: a browser plane carrying a real interface mockup.
@@ -27,6 +28,9 @@ type Composition = {
   url: string;
   body: React.ReactNode;
 };
+
+/** The `useTranslations("mockups")` function, passed down to each composition. */
+type T = ReturnType<typeof useTranslations<"mockups">>;
 
 /**
  * Supporting photography, sized for the place it sits inside a mockup:
@@ -62,10 +66,11 @@ function InlinePhoto({
 }
 
 export function ProjectFrame({ variant }: { variant: number }) {
+  const t = useTranslations("mockups");
   const v = variant % 3;
   const composition = [opsComposition, supportComposition, approvalComposition][
     v
-  ]();
+  ](t);
 
   return (
     <div className="group/frame relative aspect-[16/10] w-full overflow-hidden rounded-2xl border border-border/10 bg-surface/50 transition-colors duration-500 group-hover:border-primary/25">
@@ -153,38 +158,40 @@ function Pill({
 
 /* ── 01. Operations platform for a service business ─────────────────────── */
 
-function opsComposition(): Composition {
+function opsComposition(t: T): Composition {
+  // Client and crew names are proper nouns; the dates follow the locale's own
+  // convention, and the status words are translated.
   const jobs = [
     {
       job: "Riverside HVAC — Unit inspection",
       crew: "M. Doyle",
-      date: "14 Mar",
-      label: "Invoiced",
+      date: t("ops.dates.first"),
+      label: t("ops.status.invoiced"),
       tone: "green" as const,
     },
     {
       job: "Bellview Apartments — Boiler service",
       crew: "K. Owusu",
-      date: "15 Mar",
-      label: "In progress",
+      date: t("ops.dates.second"),
+      label: t("ops.status.inProgress"),
       tone: "blue" as const,
       photo: {
         src: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=200&q=80",
-        alt: "Service technician in a hard hat working on equipment on site",
+        alt: t("ops.photoAlt"),
       },
     },
     {
       job: "Northgate Retail — Quarterly maintenance",
       crew: "S. Patel",
-      date: "18 Mar",
-      label: "Scheduled",
+      date: t("ops.dates.third"),
+      label: t("ops.status.scheduled"),
       tone: "amber" as const,
     },
     {
       job: "Harbour Café — Extractor repair",
       crew: "M. Doyle",
-      date: "19 Mar",
-      label: "Awaiting parts",
+      date: t("ops.dates.fourth"),
+      label: t("ops.status.awaitingParts"),
       tone: "red" as const,
     },
   ];
@@ -195,26 +202,38 @@ function opsComposition(): Composition {
       <div className="flex min-h-0 flex-1 flex-col gap-2 md:gap-3">
         <div className="flex items-center justify-between gap-2">
           <span className="truncate text-[8px] font-semibold text-foreground sm:text-[9px] md:text-[12px]">
-            Jobs board — this week
+            {t("ops.title")}
           </span>
-          <Pill tone="green">All synced</Pill>
+          <Pill tone="green">{t("ops.synced")}</Pill>
         </div>
 
         <StatRow
           stats={[
-            { label: "Jobs this week", value: "34", sub: "6 more than last" },
-            { label: "Time to invoice", value: "1.2 days", sub: "was 6 days" },
-            { label: "Crew utilisation", value: "87%", sub: "5 crews out" },
+            {
+              label: t("ops.stats.jobs.label"),
+              value: "34",
+              sub: t("ops.stats.jobs.sub"),
+            },
+            {
+              label: t("ops.stats.invoice.label"),
+              value: t("ops.stats.invoice.value"),
+              sub: t("ops.stats.invoice.sub"),
+            },
+            {
+              label: t("ops.stats.utilisation.label"),
+              value: "87%",
+              sub: t("ops.stats.utilisation.sub"),
+            },
           ]}
         />
 
         <div className="flex min-h-0 flex-1 flex-col rounded-md border border-border/10 bg-surface/40">
           <div className="flex items-center justify-between border-b border-border/10 px-2 py-1 text-[6px] font-medium uppercase tracking-wide text-muted/80 sm:text-[6.5px] md:text-[8px]">
-            <span>Job</span>
+            <span>{t("ops.columns.job")}</span>
             <span className="flex gap-3 md:gap-6">
-              <span className="hidden sm:inline">Crew</span>
-              <span>Due</span>
-              <span>Status</span>
+              <span className="hidden sm:inline">{t("ops.columns.crew")}</span>
+              <span>{t("ops.columns.due")}</span>
+              <span>{t("ops.columns.status")}</span>
             </span>
           </div>
           <div className="flex flex-1 flex-col justify-around px-2 py-0.5">
@@ -257,7 +276,7 @@ function opsComposition(): Composition {
 
 /* ── 02. Customer support assistant ─────────────────────────────────────── */
 
-function supportComposition(): Composition {
+function supportComposition(t: T): Composition {
   return {
     url: "northline.supply/inbox",
     body: (
@@ -266,17 +285,17 @@ function supportComposition(): Composition {
           <span className="flex min-w-0 items-center gap-1.5 md:gap-2">
             <InlinePhoto
               src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=200&q=80"
-              alt="Support team at a desk working through customer conversations"
+              alt={t("support.photoAlt")}
               className="size-4 md:size-6"
             />
             <span className="truncate text-[8px] font-semibold text-foreground sm:text-[9px] md:text-[12px]">
-              Support assistant
+              {t("support.title")}
             </span>
           </span>
           <span className="hidden text-[8px] text-muted md:inline">
-            68% resolved without a human today
+            {t("support.resolved")}
           </span>
-          <Pill tone="green">Online</Pill>
+          <Pill tone="green">{t("support.online")}</Pill>
         </div>
 
         {/* order context card */}
@@ -286,44 +305,40 @@ function supportComposition(): Composition {
           </span>
           <div className="min-w-0">
             <span className="block truncate text-[7px] font-semibold text-foreground sm:text-[8px] md:text-[10px]">
-              Order #4521 · Shipped
+              {t("support.order.title")}
             </span>
             <span className="block truncate text-[6px] text-muted sm:text-[7px] md:text-[9px]">
-              2 items · DHL Express · arrives 16 Mar
+              {t("support.order.detail")}
             </span>
           </div>
-          <Pill tone="blue">In transit</Pill>
+          <Pill tone="blue">{t("support.order.status")}</Pill>
         </div>
 
         {/* conversation */}
         <div className="flex min-h-0 flex-1 flex-col justify-end gap-1.5 md:justify-between md:gap-2">
           <div className="ml-auto hidden max-w-[72%] rounded-lg rounded-br-xs border border-border/10 bg-surface/70 px-2 py-1 text-[7px] leading-snug text-foreground/85 sm:block sm:text-[8px] md:px-2.5 md:py-1.5 md:text-[10px]">
-            Do the wool socks run small?
+            {t("support.thread.questionOne")}
           </div>
           <div className="hidden max-w-[82%] rounded-lg rounded-bl-xs border border-primary/25 bg-primary/10 px-2 py-1 text-[7px] leading-snug text-foreground sm:block sm:text-[8px] md:px-2.5 md:py-1.5 md:text-[10px]">
-            They run true to size — the merino pair is on the size chart as EU
-            42-44 for a UK 8.
+            {t("support.thread.answerOne")}
           </div>
           <div className="ml-auto max-w-[72%] rounded-lg rounded-br-xs border border-border/10 bg-surface/70 px-2 py-1 text-[7px] leading-snug text-foreground/85 sm:text-[8px] md:px-2.5 md:py-1.5 md:text-[10px]">
-            Where&apos;s my order #4521?
+            {t("support.thread.questionTwo")}
           </div>
           <div className="max-w-[82%] rounded-lg rounded-bl-xs border border-primary/25 bg-primary/10 px-2 py-1 text-[7px] leading-snug text-foreground sm:text-[8px] md:px-2.5 md:py-1.5 md:text-[10px]">
-            Order #4521 shipped yesterday — here&apos;s your tracking link. It
-            is out for delivery on Saturday.
+            {t("support.thread.answerTwo")}
           </div>
           <div className="flex flex-wrap items-center gap-1.5">
             <span className="rounded-full border border-primary/30 bg-primary/5 px-1.5 py-px text-[6px] font-medium text-primary sm:text-[7px] md:px-2 md:text-[8.5px]">
-              Track parcel ↗
+              {t("support.actions.track")}
             </span>
             <span className="rounded-full border border-border/15 bg-surface/70 px-1.5 py-px text-[6px] text-muted sm:text-[7px] md:px-2 md:text-[8.5px]">
-              Change delivery address
+              {t("support.actions.address")}
             </span>
           </div>
           <div className="flex items-center gap-1.5 rounded-md border border-border/10 bg-surface/40 px-2 py-1 text-[6px] text-muted sm:text-[7px] md:text-[8.5px]">
             <span className="size-1 shrink-0 rounded-full bg-amber-500" />
-            <span className="truncate">
-              Refund request handed to Amira · full thread attached
-            </span>
+            <span className="truncate">{t("support.handoff")}</span>
           </div>
         </div>
       </div>
@@ -340,30 +355,30 @@ const names: Record<string, string> = {
   LT: "L. Tan",
 };
 
-function approvalComposition(): Composition {
+function approvalComposition(t: T): Composition {
   const requests = [
     {
-      name: "Q3 vendor contract — Legal review",
+      name: t("approvals.requests.contract"),
       approver: "AK",
-      label: "Approved",
+      label: t("approvals.status.approved"),
       tone: "green" as const,
     },
     {
-      name: "New hire laptops — £2,400",
+      name: t("approvals.requests.laptops"),
       approver: "MR",
-      label: "Pending",
+      label: t("approvals.status.pending"),
       tone: "amber" as const,
     },
     {
-      name: "Client travel — Rotterdam site visit",
+      name: t("approvals.requests.travel"),
       approver: "JD",
-      label: "Rejected",
+      label: t("approvals.status.rejected"),
       tone: "red" as const,
     },
     {
-      name: "Marketing spend — Q3 campaign uplift",
+      name: t("approvals.requests.marketing"),
       approver: "LT",
-      label: "Pending",
+      label: t("approvals.status.pending"),
       tone: "amber" as const,
     },
   ];
@@ -374,9 +389,9 @@ function approvalComposition(): Composition {
       <div className="flex min-h-0 flex-1 flex-col gap-2 md:gap-3">
         <div className="flex items-center justify-between gap-2">
           <span className="truncate text-[8px] font-semibold text-foreground sm:text-[9px] md:text-[12px]">
-            Requests · Q3
+            {t("approvals.title")}
           </span>
-          <Pill tone="amber">4 waiting on you</Pill>
+          <Pill tone="amber">{t("approvals.waiting")}</Pill>
         </div>
 
         <div className="flex min-h-0 flex-1 flex-col justify-around gap-1.5">
@@ -395,7 +410,7 @@ function approvalComposition(): Composition {
                   {r.name}
                 </span>
                 <span className="hidden truncate text-[8px] text-muted md:block">
-                  Current approver · {names[r.approver]}
+                  {t("approvals.currentApprover", { name: names[r.approver] })}
                 </span>
               </div>
               <Pill tone={r.tone}>{r.label}</Pill>
@@ -407,22 +422,22 @@ function approvalComposition(): Composition {
         <div className="flex items-center gap-2 rounded-md border border-border/10 bg-surface/40 px-2 py-1 md:gap-2.5 md:px-2.5 md:py-1.5">
           <InlinePhoto
             src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=200&q=80"
-            alt="Person reviewing signed paperwork at a desk"
+            alt={t("approvals.photoAlt")}
             shape="square"
             className="size-6 md:size-9"
           />
           <div className="min-w-0">
             <div className="flex items-center gap-1.5 text-[6px] sm:text-[7px] md:text-[9px]">
-              <span className="text-muted">Submitted</span>
+              <span className="text-muted">{t("approvals.trail.submitted")}</span>
               <span className="text-border/60">→</span>
-              <span className="text-muted">Reviewed</span>
+              <span className="text-muted">{t("approvals.trail.reviewed")}</span>
               <span className="text-border/60">→</span>
               <span className="font-medium text-emerald-700 dark:text-emerald-300">
-                Approved
+                {t("approvals.trail.approved")}
               </span>
             </div>
             <span className="mt-0.5 block truncate text-[6px] text-muted sm:text-[6.5px] md:text-[8px]">
-              Approved 14:02 today by A. Karim · logged automatically
+              {t("approvals.trail.logged")}
             </span>
           </div>
         </div>
