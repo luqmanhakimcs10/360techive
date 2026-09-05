@@ -14,6 +14,8 @@ import { ThemeToggle } from "../ui/ThemeToggle";
 import { siteConfig } from "@/config/site";
 import { useSafeReducedMotion } from "@/components/ui/useSafeReducedMotion";
 
+import { BrandLogo } from "@/components/ui/BrandLogo";
+
 /**
  * Minimal navigation with two states.
  *
@@ -61,10 +63,9 @@ export function Navbar() {
       >
         <Link
           href="/"
-          className="group flex items-center gap-2 text-lg font-semibold tracking-tight text-foreground"
+          className="group flex items-center text-foreground focus-visible:outline-none"
         >
-          <span className="size-1.5 rounded-full bg-primary transition-transform duration-300 group-hover:scale-150 motion-reduce:transform-none" />
-          {siteConfig.name}
+          <BrandLogo />
         </Link>
 
         {/* Desktop */}

@@ -8,7 +8,7 @@
  * Copy rule for this file: plain sentences, no dashes of any kind.
  */
 
-export type ProductStatus = "building" | "beta" | "research";
+export type ProductStatus = "building" | "beta" | "research" | "live";
 
 export interface Capability {
   /** Stable key, also used as the preview id. */
@@ -24,6 +24,12 @@ export interface Product {
   category: string;
   status: ProductStatus;
   description: string;
+  /** Stable key used to select the correct preview mockup. */
+  mockId: string;
+  /** External URL for live/shipped products. Opens in a new tab. */
+  url?: string;
+  /** Name of the featured project, shown alongside the View Project link. */
+  projectName?: string;
 }
 
 export interface LabArea {
@@ -111,40 +117,56 @@ export const stages = [
 ] as const;
 
 /**
- * Section 5. PLACEHOLDER CONCEPTS.
+ * Section 5.
  *
- * These are real ideas we are exploring, written so a genuine product can
- * replace an entry without touching the component. No metrics here on purpose:
- * nothing has numbers worth publishing yet.
+ * Five products: two reference real, live external projects (CoinStudy and
+ * AQ Gimel). The other three are in active development. Descriptions are
+ * original and do not reproduce marketing copy from any external site.
  */
 export const products: Product[] = [
   {
-    name: "Deskline",
-    category: "Internal tools",
+    name: "WA Agent",
+    category: "AI Automation",
     status: "building",
+    mockId: "wa-agent",
     description:
-      "A shared inbox and task board for small teams that still run most of their work through email. Every message becomes something someone owns.",
+      "A WhatsApp based AI agent that automates conversations, answers frequently asked questions and handles routine customer interactions directly inside WhatsApp. Built for businesses that already run their support and sales through messaging.",
   },
   {
-    name: "Handoff",
-    category: "Client operations",
-    status: "beta",
+    name: "Chatbots",
+    category: "AI Products",
+    status: "building",
+    mockId: "chatbots",
     description:
-      "Client onboarding without the back and forth. Documents, approvals and next steps in one place, so both sides can see what is outstanding.",
+      "Configurable AI chatbots you can embed on your own website or application. Each one is trained on your content and tuned for your domain, handling customer support and capturing leads around the clock.",
   },
   {
-    name: "Cadence",
-    category: "Reporting",
-    status: "research",
+    name: "Websites",
+    category: "Web Development",
+    status: "live",
+    mockId: "websites",
+    url: "https://coinstudy.co/",
+    projectName: "CoinStudy",
     description:
-      "Turns the numbers a business already collects into a short written update every week, in language the whole team can read.",
+      "Custom web builds ranging from marketing sites to full web applications with live data and user accounts. Our featured project, CoinStudy, is a halal crypto research platform that screens cryptocurrencies against a multi factor Shariah compliance scoring framework, with live market data and an AI assisted asset checker.",
   },
   {
-    name: "Fieldmark",
-    category: "Field operations",
-    status: "research",
+    name: "E-commerce Platforms",
+    category: "E-commerce",
+    status: "live",
+    mockId: "ecommerce",
+    url: "https://aqgimel.com/",
+    projectName: "AQ Gimel",
     description:
-      "Scheduling and site reporting for teams that work away from a desk, built to keep working when the signal does not.",
+      "Online storefronts with product catalogs, checkout and customer accounts, built or customized around a client's actual catalog and operations. Our featured project, AQ Gimel, is a full e-commerce build for a private label vegan cosmetics manufacturer, with a multi category product catalog, multi currency checkout and a membership tier for repeat business customers.",
+  },
+  {
+    name: "Management System",
+    category: "Business Tools",
+    status: "building",
+    mockId: "management",
+    description:
+      "Internal operations software that replaces spreadsheets and manual tracking for things like inventory, staff records and scheduling. Each system is built around the way a specific business actually runs, not a generic template.",
   },
 ];
 

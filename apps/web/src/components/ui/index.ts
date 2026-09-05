@@ -14,3 +14,4 @@ export { Eyebrow } from "./Eyebrow";
 export { Section } from "./Section";
 export { Reveal, RevealGroup, RevealItem } from "./Reveal";
 export { LineReveal } from "./TextReveal";
+export { Logo } from "./Logo";

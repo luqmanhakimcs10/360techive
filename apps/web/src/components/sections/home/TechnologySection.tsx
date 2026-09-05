@@ -34,7 +34,7 @@ const groups: { label: string; items: readonly string[]; note: string }[] = [
 
 export function TechnologySection() {
   return (
-    <Section tone="tinted">
+    <Section tone="tinted" glow="left" glowStrength="soft">
       <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr] lg:gap-20">
         <div className="lg:sticky lg:top-32 lg:self-start">
           <Eyebrow>Technology</Eyebrow>
@@ -60,7 +60,7 @@ export function TechnologySection() {
         <RevealGroup className="flex flex-col" stagger={0.07}>
           {groups.map((group) => (
             <RevealItem key={group.label}>
-              <div className="border-t border-border/10 py-7 last:border-b">
+              <div className="group/row rounded-lg border-t border-border/10 px-3 py-7 transition-colors duration-300 hover:bg-foreground/[0.02] last:border-b">
                 <div className="flex flex-col gap-1">
                   <span className="text-[11px] uppercase tracking-[0.14em] text-muted">
                     {group.label}
@@ -72,9 +72,9 @@ export function TechnologySection() {
                   {group.items.map((item) => (
                     <li
                       key={item}
-                      className="group/item flex items-center gap-2 text-[15px] text-muted transition-colors duration-200 hover:text-foreground"
+                      className="group/item flex cursor-default items-center gap-2 text-[15px] text-muted transition-all duration-300 hover:translate-x-1 hover:text-foreground motion-reduce:transform-none"
                     >
-                      <span className="size-1 rounded-full bg-border/25 transition-colors duration-200 group-hover/item:bg-primary" />
+                      <span className="size-1 rounded-full bg-border/25 transition-all duration-300 group-hover/item:size-1.5 group-hover/item:bg-primary" />
                       {item}
                     </li>
                   ))}

@@ -28,10 +28,10 @@ export function HomeHero() {
   return (
     <section className="relative overflow-hidden px-4 pb-20 pt-28 md:px-8 md:pb-28 md:pt-32">
       {/* the one ambient wash on the page */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -right-52 -top-56 size-[760px] rounded-full bg-[radial-gradient(circle,rgb(var(--color-primary)/0.10),transparent_65%)]"
-      />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <span className="absolute -right-52 -top-56 size-[860px] rounded-full bg-[radial-gradient(circle,rgb(var(--color-primary)/0.18),transparent_66%)]" />
+        <span className="absolute -bottom-72 -left-40 size-[620px] rounded-full bg-[radial-gradient(circle,rgb(var(--color-primary)/0.10),transparent_68%)]" />
+      </div>
 
       <div className="relative mx-auto grid w-full max-w-7xl items-center gap-14 lg:grid-cols-[1.02fr_0.98fr] lg:gap-20">
         <div className="flex flex-col gap-6">

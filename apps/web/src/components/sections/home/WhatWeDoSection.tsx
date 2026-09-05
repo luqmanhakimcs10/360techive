@@ -29,7 +29,7 @@ export function WhatWeDoSection() {
   });
 
   return (
-    <Section id="what-we-do">
+    <Section id="what-we-do" glow="right" glowStrength="soft">
       <div className="grid gap-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-24">
         <div className="lg:sticky lg:top-32 lg:self-start">
           <Eyebrow>What we do</Eyebrow>

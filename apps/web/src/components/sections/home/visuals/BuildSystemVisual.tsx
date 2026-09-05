@@ -9,6 +9,7 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
+import Image from "next/image";
 import { useSafeReducedMotion } from "@/components/ui/useSafeReducedMotion";
 
 /**
@@ -285,6 +286,12 @@ function PanelLabel({ children }: { children: React.ReactNode }) {
 }
 
 function WebAppPanel({ still }: { still: boolean }) {
+  const stats = [
+    { label: "Active", val: "2.4k", icon: "●" },
+    { label: "Growth", val: "+18%", icon: "▲" },
+    { label: "Uptime", val: "99.9%", icon: "✓" },
+  ];
+
   return (
     <div className={panelClass}>
       <div className="flex items-center gap-1.5 border-b border-border/10 px-2.5 py-2">
@@ -295,7 +302,26 @@ function WebAppPanel({ still }: { still: boolean }) {
           <PanelLabel>Web app</PanelLabel>
         </span>
       </div>
-      <div className="flex gap-2 p-2.5">
+
+      {/* Row of 3 stat mini-cards (icon + label + number) */}
+      <div className="flex gap-1.5 px-2.5 pt-2">
+        {stats.map((s, i) => (
+          <div key={i} className="flex-1 rounded-md border border-border/10 bg-background/50 p-1.5">
+            <div className="flex items-center justify-between text-[6px] uppercase tracking-wider text-muted">
+              <span>{s.label}</span>
+              <span className={i === 1 ? "text-primary text-[7px]" : "text-muted/60 text-[7px]"}>
+                {s.icon}
+              </span>
+            </div>
+            <div className="mt-0.5 text-[9px] font-semibold tracking-tight text-foreground/90 tabular-nums">
+              {s.val}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Dashboard bar chart */}
+      <div className="flex gap-2 px-2.5 pb-2.5 pt-2">
         <div className="flex w-1/4 flex-col gap-1.5">
           {[0, 1, 2, 3].map((i) => (
             <div
@@ -306,7 +332,7 @@ function WebAppPanel({ still }: { still: boolean }) {
             />
           ))}
         </div>
-        <div className="flex h-11 flex-1 items-end gap-1.5">
+        <div className="flex h-10 flex-1 items-end gap-1.5">
           {[38, 62, 46, 78, 54, 88].map((h, i) => (
             <motion.div
               key={i}
@@ -329,26 +355,82 @@ function WebAppPanel({ still }: { still: boolean }) {
 }
 
 function MobilePanel({ still }: { still: boolean }) {
+  const cards = [
+    {
+      img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=120&q=80",
+      title: "Nutrition Log",
+      sub: "Logged 4h ago",
+      active: false,
+    },
+    {
+      img: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=120&q=80",
+      title: "Morning Roast",
+      sub: "Order ready",
+      active: true,
+    },
+    {
+      img: "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=120&q=80",
+      title: "Core Session",
+      sub: "Completed",
+      active: false,
+    },
+  ];
+
   return (
     <div className={`${panelClass} p-1.5`}>
-      <div className="rounded-lg border border-border/10 bg-background/50 p-2">
-        <div className="mx-auto mb-2 h-0.5 w-5 rounded-full bg-border/20" />
-        <div className="mb-2 h-8 rounded-md bg-primary/20" />
-        <div className="flex flex-col gap-1.5">
-          {[0, 1, 2].map((i) => (
+      <div className="flex h-[112px] flex-col overflow-hidden rounded-lg border border-border/10 bg-background/60">
+        {/* Status bar */}
+        <div className="flex items-center justify-between px-2 py-0.5 text-[6px] font-medium text-muted/70">
+          <span>9:41</span>
+          <div className="flex items-center gap-0.5">
+            <span className="size-1 rounded-full bg-muted/60" />
+            <span className="size-1 rounded-full bg-muted/60" />
+            <span className="h-1 w-1.5 rounded-xs bg-muted/60" />
+          </div>
+        </div>
+
+        {/* App header */}
+        <div className="flex items-center justify-between border-b border-border/10 px-2 pb-1">
+          <span className="text-[7px] font-semibold text-foreground/80">Activity</span>
+          <span className="size-1.5 rounded-full bg-primary/80" />
+        </div>
+
+        {/* Card rows with real small photos */}
+        <div className="flex flex-1 flex-col justify-around py-0.5">
+          {cards.map((c, i) => (
             <motion.div
               key={i}
               initial={still ? { opacity: 1 } : { opacity: 0, x: -4 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.35, delay: 0.9 + i * 0.1 }}
-              className="flex items-center gap-1.5"
+              className={`flex items-center gap-1.5 px-2 py-1 transition-colors ${
+                c.active
+                  ? "border-l-2 border-l-primary bg-primary/15"
+                  : "border-l-2 border-l-transparent"
+              }`}
             >
-              <span className="size-2 shrink-0 rounded-[3px] bg-border/25" />
-              <span className="h-1 flex-1 rounded-full bg-border/20" />
+              <div className="relative size-4 shrink-0 overflow-hidden rounded">
+                <Image
+                  src={c.img}
+                  alt={c.title}
+                  width={16}
+                  height={16}
+                  className="size-full object-cover dark:brightness-90"
+                />
+              </div>
+              <div className="flex min-w-0 flex-1 flex-col leading-none">
+                <span className="truncate text-[7px] font-medium text-foreground/85">
+                  {c.title}
+                </span>
+                <span className="truncate text-[6px] text-muted">
+                  {c.sub}
+                </span>
+              </div>
             </motion.div>
           ))}
         </div>
       </div>
+
       <div className="px-1 pb-0.5 pt-1.5 text-center">
         <PanelLabel>Mobile</PanelLabel>
       </div>
@@ -357,63 +439,134 @@ function MobilePanel({ still }: { still: boolean }) {
 }
 
 function AgentPanel({ still }: { still: boolean }) {
+  const avatarUrl =
+    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80";
+
   return (
     <div className={`${panelClass} p-2.5`}>
-      <div className="mb-2 flex items-center gap-1.5">
-        <span className="relative flex size-1.5">
-          {!still && (
-            <motion.span
-              animate={{ scale: [1, 2.4, 1], opacity: [0.6, 0, 0.6] }}
-              transition={{ duration: 2.4, repeat: Infinity, ease: "easeOut" }}
-              className="absolute inset-0 rounded-full bg-primary"
-            />
-          )}
-          <span className="relative size-1.5 rounded-full bg-primary" />
-        </span>
-        <PanelLabel>AI agent</PanelLabel>
+      <div className="mb-2 flex items-center justify-between">
+        <div className="flex items-center gap-1.5">
+          <span className="relative flex size-1.5">
+            {!still && (
+              <motion.span
+                animate={{ scale: [1, 2.4, 1], opacity: [0.6, 0, 0.6] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: "easeOut" }}
+                className="absolute inset-0 rounded-full bg-primary"
+              />
+            )}
+            <span className="relative size-1.5 rounded-full bg-primary" />
+          </span>
+          <PanelLabel>AI agent</PanelLabel>
+        </div>
+        <span className="text-[7px] text-muted/70 font-mono">online</span>
       </div>
+
       <div className="flex flex-col gap-1.5">
-        <div className="ml-auto h-3 w-3/5 rounded-md rounded-br-sm bg-border/20" />
+        {/* Real circular headshot avatar + short muted message bubble */}
+        <div className="flex items-end gap-1.5">
+          <div className="relative size-4 shrink-0 overflow-hidden rounded-full ring-1 ring-border/20">
+            <Image
+              src={avatarUrl}
+              alt="AI Agent Avatar"
+              width={16}
+              height={16}
+              className="size-full object-cover dark:brightness-90"
+            />
+          </div>
+          <div className="rounded-lg rounded-tl-xs border border-border/10 bg-surface/70 px-2 py-1 text-[7px] leading-tight text-foreground/75 shadow-xs">
+            Sync database metrics?
+          </div>
+        </div>
+
+        {/* Short primary-red response bubble */}
         <motion.div
           initial={still ? { opacity: 1 } : { opacity: 0, y: 3 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 1.05 }}
-          className="h-5 w-4/5 rounded-md rounded-bl-sm bg-primary/20"
-        />
+          className="ml-auto rounded-lg rounded-br-xs bg-primary px-2 py-1 text-[7px] font-medium leading-tight text-white shadow-xs"
+        >
+          4 services synced ✓
+        </motion.div>
       </div>
     </div>
   );
 }
 
 function AutomationPanel({ still }: { still: boolean }) {
+  const sliders = [
+    {
+      label: "mail",
+      val: "72%",
+      icon: (
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M1.5 2.5h7c.55 0 1 .45 1 1v3c0 .55-.45 1-1 1h-7c-.55 0-1-.45-1-1v-3c0-.55.45-1 1-1zm0 0l3.5 2 3.5-2"
+        />
+      ),
+      active: false,
+    },
+    {
+      label: "calendar",
+      val: "48%",
+      icon: (
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M2.5 2.5h5c.28 0 .5.22.5.5v4c0 .28-.22.5-.5.5h-5c-.28 0-.5-.22-.5-.5v-4c0-.28.22-.5.5-.5zm1.5 -1v2m2 -2v2m-4 2h5"
+        />
+      ),
+      active: false,
+    },
+    {
+      label: "database",
+      val: "86%",
+      icon: (
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M1.5 3.5c0-.83 1.57-1.5 3.5-1.5s3.5.67 3.5 1.5M1.5 3.5v3c0 .83 1.57 1.5 3.5 1.5s3.5-.67 3.5-1.5v-3M1.5 5c0 .83 1.57 1.5 3.5 1.5s3.5-.67 3.5-1.5"
+        />
+      ),
+      active: true,
+    },
+  ];
+
   return (
     <div className={`${panelClass} p-2.5`}>
-      <div className="mb-2.5">
+      <div className="mb-2">
         <PanelLabel>Automation</PanelLabel>
       </div>
-      <div className="relative flex items-center justify-between">
-        <span className="absolute inset-x-2 top-1/2 h-px -translate-y-1/2 bg-border/20" />
-        {!still && (
-          <motion.span
-            animate={{ left: ["8%", "88%"], opacity: [0, 1, 1, 0] }}
-            transition={{
-              duration: 2.6,
-              repeat: Infinity,
-              ease: "easeInOut",
-              times: [0, 0.15, 0.85, 1],
-            }}
-            className="absolute top-1/2 size-1 -translate-y-1/2 rounded-full bg-primary"
-          />
-        )}
-        {[0, 1, 2, 3].map((i) => (
-          <span
-            key={i}
-            className={`relative size-2.5 rounded-[4px] border ${
-              i === 3
-                ? "border-primary/50 bg-primary/30"
-                : "border-border/15 bg-surface"
-            }`}
-          />
+
+      {/* Slider rows with leading icons (mail, calendar, database) */}
+      <div className="flex flex-col gap-2">
+        {sliders.map((s, i) => (
+          <div key={i} className="flex items-center gap-2">
+            <span
+              className={`flex size-4 shrink-0 items-center justify-center rounded border ${
+                s.active
+                  ? "border-primary/40 bg-primary/20 text-primary"
+                  : "border-border/15 bg-surface text-muted"
+              }`}
+            >
+              <svg viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1" className="size-2.5">
+                {s.icon}
+              </svg>
+            </span>
+            <div className="relative flex-1">
+              <div className="h-1 w-full rounded-full bg-border/20 overflow-hidden">
+                <motion.div
+                  initial={still ? { width: s.val } : { width: "10%" }}
+                  animate={{ width: s.val }}
+                  transition={{ duration: 0.6, delay: 0.8 + i * 0.12 }}
+                  className={`h-full rounded-full ${s.active ? "bg-primary" : "bg-muted/50"}`}
+                />
+              </div>
+            </div>
+            <span className="text-[6px] font-mono text-muted/80 w-4 text-right">
+              {s.val}
+            </span>
+          </div>
         ))}
       </div>
     </div>

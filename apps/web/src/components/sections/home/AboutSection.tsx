@@ -19,7 +19,7 @@ const disciplines = [
 
 export function AboutSection() {
   return (
-    <Section id="about" tone="tinted">
+    <Section id="about" tone="tinted" glow="center" glowStrength="medium">
       <div className="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-20">
         <div className="flex flex-col gap-5">
           <Eyebrow>About us</Eyebrow>
